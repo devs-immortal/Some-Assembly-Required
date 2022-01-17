@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "sar",
+  "version": "${version}",
+
+  "name": "Some Assembly Required",
+  "description": "A component and modifier system for modular items",
+  "authors": [
+    "SollyW"
+  ],
+
+  "license": "a",
+  "icon": "assets/sar/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.immortaldevs.sar.base.Sar"
+    ]
+  },
+
+  "mixins": [
+    "sar.mixins.json"
+  ],
+
+  "depends": {
+    "fabric": "*",
+    "fabricloader": "*",
+    "minecraft": "*",
+    "java": ">=17"
+  }
+}
