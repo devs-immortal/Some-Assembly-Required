@@ -1,5 +1,7 @@
 package net.immortaldevs.sar.mixin.client;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.immortaldevs.sar.base.client.DynamicBakedModel;
 import net.minecraft.client.particle.CrackParticle;
 import net.minecraft.client.particle.SpriteBillboardParticle;
@@ -11,6 +13,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+@Environment(EnvType.CLIENT)
 @Mixin(CrackParticle.class)
 public abstract class CrackParticleMixin extends SpriteBillboardParticle {
     private CrackParticleMixin(ClientWorld clientWorld, double d, double e, double f) {
