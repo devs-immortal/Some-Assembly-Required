@@ -9,7 +9,7 @@
     "SollyW"
   ],
 
-  "license": "a",
+  "license": "MIT",
   "icon": "assets/sar/icon.png",
 
   "environment": "*",
