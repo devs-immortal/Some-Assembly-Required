@@ -20,16 +20,21 @@ jobs:
           name: artifacts
           path: ./build/libs/
       - name: Get release version
-        uses: thecodemonkey/action-get-gradle-version@master
+        uses: madhead/read-java-properties@latest
         id: version
+        with:
+          file: gradle.properties
+          property: version
+          default: 0.0.0
       - name: Create tag
         uses: actions/github-script@v5
+        if: success() && github.ref == 'refs/heads/master'
         with:
           script: |
             github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: 'refs/tags/v${{ steps.version.outputs.version }}',
+              ref: 'refs/tags/v${{ steps.version.outputs.value }}',
               sha: context.sha
             })
 #      - name: Build Success
