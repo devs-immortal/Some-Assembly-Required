@@ -9,6 +9,7 @@ import net.minecraft.util.Identifier;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Environment(EnvType.CLIENT)
 public final class SarSprite {
     private static final List<SpriteIdentifier> IDS = new ArrayList<>();

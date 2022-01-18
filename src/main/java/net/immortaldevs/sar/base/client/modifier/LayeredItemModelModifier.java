@@ -15,6 +15,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.function.Supplier;
 
+@SuppressWarnings("unused")
 @Environment(EnvType.CLIENT)
 public final class LayeredItemModelModifier implements ItemModelModifier {
     private final ModifierMap home;
