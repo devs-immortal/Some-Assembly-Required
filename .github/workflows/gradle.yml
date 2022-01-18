@@ -30,7 +30,7 @@ jobs:
         if: success() && github.ref == 'refs/heads/master'
         with:
           script: |
-            github.rest.git.createRef({
+            github.rest.git.updateRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
               ref: 'refs/tags/${{ steps.version.outputs.value }}',
