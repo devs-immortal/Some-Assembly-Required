@@ -4,41 +4,44 @@ import net.immortaldevs.sar.api.Modifier;
 import net.immortaldevs.sar.api.ModifierMap;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 public final class HashModifierMap implements ModifierMap {
     private final Map<Class<? extends Modifier>, Modifier> entries = new HashMap<>();
+
+    public Collection<Modifier> entries() {
+        return entries.values();
+    }
 
     @Override
     public <T extends Modifier> void put(Class<T> key, T value) {
         entries.put(key, value);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T extends Modifier> @Nullable T get(Class<T> key) {
-        Modifier value = entries.get(key);
-        return key.cast(value);
+        return (T) entries.get(key);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public <T extends Modifier> T getOr(Class<T> key, T or) {
-        T value = this.get(key);
-        return value == null ? or : value;
+        return (T) entries.getOrDefault(key, or);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public <T extends Modifier> void append(Class<T> key, T value, Function<T, T> appender) {
-        T entry = this.get(key);
-        entries.put(key, entry == null ? value : appender.apply(entry));
+    public <T extends Modifier> void merge(Class<T> key, T value, BiFunction<T, T, T> remappingFunction) {
+        entries.merge(key, value, (a, b) -> remappingFunction.apply((T) a, (T) b));
     }
 
     @Override
     public <T extends Modifier> void putIfAbsent(Class<T> key, T value) {
-        if (!entries.containsKey(key)) {
-            entries.put(key, value);
-        }
+        entries.putIfAbsent(key, value);
     }
 
     @Override

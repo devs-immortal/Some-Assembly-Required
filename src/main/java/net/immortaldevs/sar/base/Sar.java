@@ -13,4 +13,8 @@ public class Sar implements ModInitializer {
                 new Identifier(SAR, "unknown"),
                 Component.UNKNOWN);
     }
+
+    public static Identifier id(String path) {
+        return new Identifier(SAR, path);
+    }
 }

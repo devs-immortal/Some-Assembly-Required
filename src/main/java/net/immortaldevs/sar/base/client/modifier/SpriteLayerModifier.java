@@ -19,9 +19,9 @@ public interface SpriteLayerModifier extends Modifier {
 
     @Override
     default void register(ModifierMap modifierMap) {
-        modifierMap.append(SpriteLayerModifier.class, this, spriteLayerModifier -> consumer -> {
-            spriteLayerModifier.apply(consumer);
-            this.apply(consumer);
+        modifierMap.merge(SpriteLayerModifier.class, this, (a, b) -> consumer -> {
+            a.apply(consumer);
+            b.apply(consumer);
         });
     }
 

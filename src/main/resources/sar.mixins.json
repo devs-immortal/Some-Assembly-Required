@@ -8,6 +8,7 @@
     "RegistryAccessor"
   ],
   "client": [
+    "client.CrackParticleMixin",
     "client.ModelLoaderMixin",
     "client.SpriteMixin"
   ],

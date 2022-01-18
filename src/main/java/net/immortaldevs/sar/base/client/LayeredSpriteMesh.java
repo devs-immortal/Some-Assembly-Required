@@ -7,28 +7,12 @@ import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
-import net.fabricmc.fabric.api.renderer.v1.model.FabricBakedModel;
-import net.fabricmc.fabric.api.renderer.v1.render.RenderContext;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.render.model.BakedQuad;
-import net.minecraft.client.render.model.json.*;
 import net.minecraft.client.texture.Sprite;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.world.BlockRenderView;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
-import java.util.function.Supplier;
-
 @Environment(EnvType.CLIENT)
-public final class LayeredSpriteBakedModel implements BakedModel, FabricBakedModel {
-    private final Mesh mesh;
-    private final Sprite particleSprite;
-
-    public LayeredSpriteBakedModel(Layer[] layers, Sprite particleSprite) {
+public final class LayeredSpriteMesh {
+    public static Mesh create(Layer[] layers) {
         Renderer renderer = RendererAccess.INSTANCE.getRenderer();
         if (renderer == null) throw new UnsupportedOperationException(
                 "Layered sprite models require the fabric rendering api, but no implementation was found.");
@@ -80,8 +64,7 @@ public final class LayeredSpriteBakedModel implements BakedModel, FabricBakedMod
             }
         }
 
-        this.mesh = builder.build();
-        this.particleSprite = particleSprite;
+        return builder.build();
     }
 
     private static @Nullable Layer getTopmostLayer(Layer[] layers, int resolutionX, int resolutionY, int x, int y) {
@@ -239,60 +222,6 @@ public final class LayeredSpriteBakedModel implements BakedModel, FabricBakedMod
         emitter.spriteColor(3, 0, -1);
 
         emitter.emit();
-    }
-
-    @Override
-    public boolean isVanillaAdapter() {
-        return false;
-    }
-
-    @Override
-    public void emitBlockQuads(BlockRenderView blockView, BlockState state, BlockPos pos, Supplier<Random> randomSupplier, RenderContext context) {
-    }
-
-    @Override
-    public void emitItemQuads(ItemStack stack, Supplier<Random> randomSupplier, RenderContext context) {
-        context.meshConsumer().accept(this.mesh);
-    }
-
-    @Override
-    public List<BakedQuad> getQuads(@Nullable BlockState state, @Nullable Direction face, Random random) {
-        return List.of();
-    }
-
-    @Override
-    public boolean useAmbientOcclusion() {
-        return false;
-    }
-
-    @Override
-    public boolean hasDepth() {
-        return false;
-    }
-
-    @Override
-    public boolean isSideLit() {
-        return false;
-    }
-
-    @Override
-    public boolean isBuiltin() {
-        return false;
-    }
-
-    @Override
-    public Sprite getParticleSprite() {
-        return this.particleSprite;
-    }
-
-    @Override
-    public ModelTransformation getTransformation() {
-        return ModelTransformation.NONE;
-    }
-
-    @Override
-    public ModelOverrideList getOverrides() {
-        return ModelOverrideList.EMPTY;
     }
 
     @Environment(EnvType.CLIENT)

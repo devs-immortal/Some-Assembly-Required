@@ -2,7 +2,7 @@ package net.immortaldevs.sar.api;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.util.function.Function;
+import java.util.function.BiFunction;
 
 @SuppressWarnings("unused")
 public interface ModifierMap {
@@ -12,7 +12,7 @@ public interface ModifierMap {
 
     <T extends Modifier> T getOr(Class<T> key, T or);
 
-    <T extends Modifier> void append(Class<T> key, T value, Function<T, T> appender);
+    <T extends Modifier> void merge(Class<T> key, T value, BiFunction<T, T, T> remappingFunction);
 
     <T extends Modifier> void putIfAbsent(Class<T> key, T value);
 
