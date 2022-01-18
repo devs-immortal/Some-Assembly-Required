@@ -1,5 +1,3 @@
 # Some Assembly Required
 
-## I
-
-i
+A component and modifier system for modular items
