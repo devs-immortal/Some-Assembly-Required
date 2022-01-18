@@ -20,12 +20,11 @@ jobs:
           name: artifacts
           path: ./build/libs/
       - name: Get release version
-        uses: madhead/read-java-properties@latest
-        id: sar_version
+        uses: christian-draeger/read-properties@1.0.1
+        id: version
         with:
-          file: gradle.properties
-          property: version
-          default: 0.0.0
+          path: gradle.properties
+          property: sar_version
       - name: Create tag
         uses: actions/github-script@v5
         if: success() && github.ref == 'refs/heads/master'
