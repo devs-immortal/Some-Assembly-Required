@@ -1,5 +1,6 @@
 package net.immortaldevs.sar.base;
 
+import net.immortaldevs.sar.api.ComponentData;
 import net.immortaldevs.sar.api.Modifier;
 import net.minecraft.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
@@ -9,9 +10,9 @@ import java.util.function.Function;
 
 public final class ModifierUtils {
     public static <T extends Modifier> @Nullable T getModifier(ItemStack stack, Class<T> type) {
-        RootComponentData rootComponentData = ((ItemStackExt) (Object) stack).sar$getComponentRoot();
+        ComponentData rootComponentData = ((ItemStackExt) (Object) stack).sar$getComponentRoot();
         if (rootComponentData == null) return null;
-        return rootComponentData.modifierMap.get(type);
+        return rootComponentData.modifierMap().get(type);
     }
 
     public static <T extends Modifier> void acceptModifier(ItemStack stack, Class<T> type, Consumer<T> action) {
