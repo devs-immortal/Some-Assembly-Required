@@ -43,7 +43,7 @@ public class NbtComponentData extends NbtSkeletalComponentData implements Compon
     public void loadChild(String name, Consumer<Modifier> modifierHandler) {
         String sanitisedName = sanitiseChild(name);
 
-        if (this.getNbt().contains(sanitisedName, NbtElement.COMPOUND_TYPE)) {
+        if (this.nbt.contains(sanitisedName, NbtElement.COMPOUND_TYPE)) {
             new NbtComponentData(this,
                     this.changedCallback,
                     this.nbt.getCompound(sanitisedName),
@@ -54,7 +54,7 @@ public class NbtComponentData extends NbtSkeletalComponentData implements Compon
 
     @Override
     public void loadChildren(String name, Consumer<Modifier> modifierHandler) {
-        NbtList nbtChildren = this.getNbt().getList(sanitiseChild(name), NbtElement.COMPOUND_TYPE);
+        NbtList nbtChildren = this.nbt.getList(sanitiseChild(name), NbtElement.COMPOUND_TYPE);
 
         for (int i = 0; i < nbtChildren.size(); i++) {
             new NbtComponentData(this,
