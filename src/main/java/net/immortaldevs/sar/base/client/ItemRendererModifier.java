@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.function.Consumer;
 
+@SuppressWarnings("unused")
 @FunctionalInterface
 public interface ItemRendererModifier extends Modifier {
     void render(ItemStack stack, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay);

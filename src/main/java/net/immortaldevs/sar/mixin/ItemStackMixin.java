@@ -51,7 +51,6 @@ public abstract class ItemStackMixin implements ItemStackExt {
     @Override
     public Optional<SkeletalComponentData> sar$getSkeletalComponentRoot() {
         if (this.componentRoot != null) {
-            // ;-;
             return Optional.ofNullable(this.componentRoot.orElse(null));
         }
 
@@ -72,7 +71,6 @@ public abstract class ItemStackMixin implements ItemStackExt {
         }
 
         NbtCompound nbt = this.getOrCreateSubNbt("sar_data");
-        nbt.putString("id", "sar:root");
 
         return new NbtSkeletalComponentData(null,
                 () -> this.componentRoot = null,

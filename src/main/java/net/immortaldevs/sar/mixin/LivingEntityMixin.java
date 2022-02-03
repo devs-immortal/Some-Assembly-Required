@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
 
+@SuppressWarnings("RedundantCast")
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
     @Inject(method = "applyFoodEffects",
@@ -20,7 +21,7 @@ public abstract class LivingEntityMixin {
                     target = "Lnet/minecraft/item/FoodComponent;getStatusEffects()Ljava/util/List;"))
     private void applyFoodEffects(ItemStack stack, World world, LivingEntity targetEntity, CallbackInfo ci) {
         Optional<RootComponentData> data;
-        if ((data = ((ItemStackExt) (Object) stack).sar$getComponentRoot()).isPresent()) {
+        if ((data = ((ItemStackExt) stack).sar$getComponentRoot()).isPresent()) {
             FoodEffectModifier modifier = data.get().modifiers().get(FoodEffectModifier.class);
             if (modifier == null) return;
             modifier.apply(stack, world, targetEntity);

@@ -34,11 +34,8 @@
   },
 
   "custom": {
-    "disabled loom:injected_interfaces": {
-      "net/minecraft/class_1799": ["net/immortaldevs/sar/base/ItemStackExt"],
-
-      "net/minecraft/class_1087": ["net/immortaldevs/sar/base/client/BakedModelExt"],
-      "net/minecraft/class_310": ["net/immortaldevs/sar/base/client/MinecraftClientExt"]
+    "loom:injected_interfaces": {
+      "net/minecraft/class_1799": ["net/immortaldevs/sar/base/ItemStackExt"]
     }
   }
 }

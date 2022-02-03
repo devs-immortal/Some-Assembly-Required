@@ -3,10 +3,6 @@ package net.immortaldevs.sar.base.client;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexFormat;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.function.Consumer;
-
 public final class RenderLayerFactory extends RenderLayer {
     private static Factory factory;
 

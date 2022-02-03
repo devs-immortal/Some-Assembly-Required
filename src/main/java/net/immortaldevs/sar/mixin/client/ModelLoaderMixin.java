@@ -11,7 +11,6 @@ import net.minecraft.client.util.ModelIdentifier;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.profiler.Profiler;
-import org.apache.commons.lang3.NotImplementedException;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;

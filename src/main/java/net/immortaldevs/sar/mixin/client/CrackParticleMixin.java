@@ -17,6 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
 
+@SuppressWarnings("RedundantCast")
 @Environment(EnvType.CLIENT)
 @Mixin(CrackParticle.class)
 public abstract class CrackParticleMixin extends SpriteBillboardParticle {
@@ -30,7 +31,7 @@ public abstract class CrackParticleMixin extends SpriteBillboardParticle {
                     shift = At.Shift.AFTER))
     private void init(ClientWorld world, double x, double y, double z, ItemStack stack, CallbackInfo ci) {
         Optional<RootComponentData> data;
-        if ((data = ((ItemStackExt) (Object) stack).sar$getComponentRoot()).isEmpty()) return;
+        if ((data = ((ItemStackExt) stack).sar$getComponentRoot()).isEmpty()) return;
 
         var modifier = ClientComponents.getModifiers(data.get())
                 .get(CrackParticleSpriteModifier.class);
