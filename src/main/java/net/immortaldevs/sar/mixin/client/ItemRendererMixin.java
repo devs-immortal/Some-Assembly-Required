@@ -23,15 +23,15 @@ public abstract class ItemRendererMixin {
                     target = "Lnet/minecraft/client/render/model/BakedModel;isBuiltin()Z"),
             cancellable = true)
     private void renderItem(ItemStack stack, ModelTransformation.Mode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, BakedModel model, CallbackInfo ci) {
-        Optional<RootComponentData> data;
-        if ((data = stack.sar$getComponentRoot()).isEmpty()) return;
+        Optional<RootComponentData> data = stack.sar$getComponentRoot();
+        if (data.isEmpty()) return;
 
-        ItemRendererModifier renderer = ClientComponents.getModifiers(data.get())
+        ItemRendererModifier modifier = ClientComponents.getModifiers(data.get())
                 .get(ItemRendererModifier.class);
 
-        if (renderer == null) return;
+        if (modifier == null) return;
 
-        renderer.render(stack, matrices, vertexConsumers, light, overlay);
+        modifier.render(stack, matrices, vertexConsumers, light, overlay);
         matrices.pop();
         ci.cancel();
     }

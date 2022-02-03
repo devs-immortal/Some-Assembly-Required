@@ -4,6 +4,7 @@
   "package": "net.immortaldevs.sar.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "EnchantmentHelperMixin",
     "ItemStackMixin",
     "LivingEntityMixin",
     "RegistryAccessor",

@@ -22,7 +22,6 @@ public class PotatoRecipe extends SpecialCraftingRecipe {
 
     @Override
     public boolean matches(CraftingInventory inventory, World world) {
-        System.out.println(inventory);
         boolean potato = false;
         boolean filling = false;
         for (int i = 0; i < inventory.size(); i++) {
