@@ -2,14 +2,12 @@ package net.immortaldevs.sar.api;
 
 import net.immortaldevs.sar.base.SarRegistries;
 
-public abstract class Component {
-    public static final Component UNKNOWN = new Component() {
-        @Override
-        public void init(ComponentData data) {
-        }
-    };
+public class Component {
+    public static final Component UNKNOWN = new Component();
+    public static final Component ROOT = new Component();
 
-    public abstract void init(ComponentData data);
+    public void init(LarvalComponentData data) {
+    }
 
     @Override
     public String toString() {

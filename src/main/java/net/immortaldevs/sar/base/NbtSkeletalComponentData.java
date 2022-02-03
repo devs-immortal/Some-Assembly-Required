@@ -1,5 +1,6 @@
 package net.immortaldevs.sar.base;
 
+import com.google.common.base.MoreObjects;
 import net.immortaldevs.sar.api.Component;
 import net.immortaldevs.sar.api.SkeletalComponentData;
 import net.minecraft.nbt.NbtCompound;
@@ -8,7 +9,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
-import static net.immortaldevs.sar.base.Sar.sanitiseChild;
+import java.util.Optional;
 
 public class NbtSkeletalComponentData implements SkeletalComponentData {
     protected final Runnable changedCallback;
@@ -16,16 +17,30 @@ public class NbtSkeletalComponentData implements SkeletalComponentData {
     private final @Nullable SkeletalComponentData parent;
     private final Component type;
 
-    public NbtSkeletalComponentData(@Nullable SkeletalComponentData parent, Runnable changedCallback, NbtCompound nbt) {
+    public NbtSkeletalComponentData(
+            @Nullable SkeletalComponentData parent,
+            Runnable changedCallback,
+            NbtCompound nbt
+    ) {
+        this(parent, changedCallback, nbt,
+                SarRegistries.COMPONENT.get(Identifier.tryParse(nbt.getString("id"))));
+    }
+
+    public NbtSkeletalComponentData(
+            @Nullable SkeletalComponentData parent,
+            Runnable changedCallback,
+            NbtCompound nbt,
+            Component type
+    ) {
         this.changedCallback = changedCallback;
         this.nbt = nbt;
         this.parent = parent;
-        this.type = SarRegistries.COMPONENT.get(Identifier.tryParse(nbt.getString("id")));
+        this.type = type;
     }
 
     @Override
-    public @Nullable SkeletalComponentData parent() {
-        return this.parent;
+    public Optional<SkeletalComponentData> parent() {
+        return Optional.ofNullable(this.parent);
     }
 
     @Override
@@ -64,50 +79,47 @@ public class NbtSkeletalComponentData implements SkeletalComponentData {
 
     @Override
     public boolean contains(String name) {
-        return this.nbt.contains(name);
+        return this.nbt.contains(sanitiseChildName(name));
     }
 
     @Override
     public boolean containsChild(String name) {
-        name = sanitiseChild(name);
-        return this.nbt.getCompound(name).contains("id", NbtElement.STRING_TYPE);
+        return this.nbt.getCompound(sanitiseChildName(name))
+                .contains("id", NbtElement.STRING_TYPE);
     }
 
     @Override
     public boolean containsChildren(String name) {
-        name = sanitiseChild(name);
-        return !this.nbt.getList(name, NbtElement.COMPOUND_TYPE).isEmpty();
+        return !this.nbt.getList(sanitiseChildName(name), NbtElement.COMPOUND_TYPE)
+                .isEmpty();
     }
 
     @Override
-    public @Nullable SkeletalComponentData getChild(String name) {
-        name = sanitiseChild(name);
-        NbtCompound childNbt = nbt.getCompound(name);
-        if (childNbt.contains("id", NbtElement.STRING_TYPE)) {
-            return new NbtSkeletalComponentData(this, this.changedCallback, childNbt);
-        } else return null;
+    public Optional<SkeletalComponentData> getChild(String name) {
+        NbtCompound childNbt = this.nbt.getCompound(sanitiseChildName(name));
+        return childNbt.contains("id", NbtElement.STRING_TYPE)
+                ? Optional.of(new NbtSkeletalComponentData(this, this.changedCallback, childNbt))
+                : Optional.empty();
     }
 
     @Override
     public SkeletalComponentData createChild(String name, Component type) {
-        name = sanitiseChild(name);
         NbtCompound childNbt = new NbtCompound();
         childNbt.putString("id", SarRegistries.COMPONENT.getId(type).toString());
-        this.nbt.put(name, childNbt);
+        this.nbt.put(sanitiseChildName(name), childNbt);
         this.changedCallback.run();
         return new NbtSkeletalComponentData(this, this.changedCallback, childNbt);
     }
 
     @Override
     public void removeChild(String name) {
-        name = sanitiseChild(name);
-        this.nbt.remove(name);
+        this.nbt.remove(sanitiseChildName(name));
         this.changedCallback.run();
     }
 
     @Override
     public Children getChildren(String name0) {
-        String name = sanitiseChild(name0);
+        String name = sanitiseChildName(name0);
         NbtList children = this.nbt.getList(name, NbtElement.COMPOUND_TYPE);
         return new Children() {
             @Override
@@ -160,6 +172,21 @@ public class NbtSkeletalComponentData implements SkeletalComponentData {
                 ret.putString("id", SarRegistries.COMPONENT.getId(type).toString());
                 return ret;
             }
+        };
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .add("type", type)
+                .toString();
+    }
+
+    protected static String sanitiseChildName(String name) {
+        return switch (name) {
+            default -> name;
+            case "id" -> "_id";
+            case "tag" -> "_tag";
         };
     }
 }

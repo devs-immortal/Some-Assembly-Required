@@ -4,9 +4,11 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Optional;
+
 @SuppressWarnings("unused")
 public interface SkeletalComponentData {
-    @Nullable SkeletalComponentData parent();
+    Optional<SkeletalComponentData> parent();
 
     Component type();
 
@@ -22,7 +24,7 @@ public interface SkeletalComponentData {
         if (this.hasNbt()) this.getNbt().put(key, element);
     }
 
-    default NbtCompound getSubNbt(String key) {
+    default @Nullable NbtCompound getSubNbt(String key) {
         if (this.hasNbt()) return this.getNbt().getCompound(key);
         return null;
     }
@@ -49,15 +51,14 @@ public interface SkeletalComponentData {
 
     boolean containsChildren(String name);
 
-    @Nullable SkeletalComponentData getChild(String name);
-
-    default SkeletalComponentData requireChild(String name) {
-        SkeletalComponentData child = this.getChild(name);
-        if (child != null) return child;
-        return this.createChild(name, Component.UNKNOWN);
-    }
+    Optional<SkeletalComponentData> getChild(String name);
 
     SkeletalComponentData createChild(String name, Component type);
+
+    default SkeletalComponentData getOrCreateChild(String name, Component type) {
+        return this.getChild(name).orElseGet(() ->
+                this.createChild(name, type));
+    }
 
     void removeChild(String name);
 

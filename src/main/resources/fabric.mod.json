@@ -16,6 +16,9 @@
   "entrypoints": {
     "main": [
       "net.immortaldevs.sar.base.Sar"
+    ],
+    "client": [
+      "net.immortaldevs.sar.base.client.SarClient"
     ]
   },
 
@@ -28,5 +31,14 @@
     "fabricloader": "*",
     "minecraft": "*",
     "java": ">=17"
+  },
+
+  "custom": {
+    "disabled loom:injected_interfaces": {
+      "net/minecraft/class_1799": ["net/immortaldevs/sar/base/ItemStackExt"],
+
+      "net/minecraft/class_1087": ["net/immortaldevs/sar/base/client/BakedModelExt"],
+      "net/minecraft/class_310": ["net/immortaldevs/sar/base/client/MinecraftClientExt"]
+    }
   }
 }

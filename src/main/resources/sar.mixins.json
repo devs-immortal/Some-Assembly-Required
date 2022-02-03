@@ -5,12 +5,16 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "ItemStackMixin",
-    "RegistryAccessor"
+    "LivingEntityMixin",
+    "RegistryAccessor",
+    "client.CrackParticleMixin",
+    "client.GameRendererMixin",
+    "client.ItemRendererMixin",
+    "client.MinecraftClientMixin",
+    "client.ModelLoaderMixin",
+    "client.RenderLayerMultiPhaseMixin"
   ],
   "client": [
-    "client.CrackParticleMixin",
-    "client.ModelLoaderMixin",
-    "client.SpriteMixin"
   ],
   "injectors": {
     "defaultRequire": 1

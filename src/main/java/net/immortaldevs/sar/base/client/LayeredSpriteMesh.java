@@ -7,10 +7,18 @@ import net.fabricmc.fabric.api.renderer.v1.RendererAccess;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
+import net.minecraft.client.render.model.json.ItemModelGenerator;
 import net.minecraft.client.texture.Sprite;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Creates a 3d item mesh resembling the vanilla {@link ItemModelGenerator}, but prevents duplicate faces when
+ * multiple textures overlap. Currently unused due to changes to component rendering making it unnecessary,
+ * but kept around in case someone has a use for it.
+ */
+@SuppressWarnings("unused")
 @Environment(EnvType.CLIENT)
+@Deprecated
 public final class LayeredSpriteMesh {
     public static Mesh create(Layer[] layers) {
         Renderer renderer = RendererAccess.INSTANCE.getRenderer();
@@ -22,10 +30,9 @@ public final class LayeredSpriteMesh {
 
         int resolutionX = 16, resolutionY = 16;
         int minOffsetX = 0, maxOffsetX = 0, minOffsetY = 0, maxOffsetY = 0;
-        for (int i = 0; i < layers.length; i++) {
-            Layer layer = layers[i];
-            face(emitter, layer, false, i);
-            face(emitter, layer, true, i);
+        for (Layer layer : layers) {
+            face(emitter, layer, false);
+            face(emitter, layer, true);
 
             if (layer.sprite.getWidth() > resolutionX) {
                 resolutionX = layer.sprite.getWidth();
@@ -158,44 +165,16 @@ public final class LayeredSpriteMesh {
                 / ((SpriteExt) layer.sprite).sar$getAtlasHeight();
     }
 
-    /*
-     * todo fix item sprite z fighting
-     * Currently, a 0.000244140625 block offset is applied to each layer, as a temporary workaround to prevent
-     * z fighting which works only at close ranges. A more permanent solution is needed.
-     * When two quads perfectly overlap, no z fighting occurs and the faces are sorted in the order in which they are
-     * added. Since vanilla items always have all layers in the same position, this is enough to prevent issues.
-     * However, as soon as there is an offset, z fighting occurs.
-     * Here are some options I've thought of to fix this permanently:
-     *
-     * - Add the offset into the AptitudeSprite object, allowing all possible offsets of the sprite to be known during
-     *   sprite atlas creation, and add a sprite to the atlas for each offset. Each layer's quads can then be in the
-     *   same position. However, this would only support a list of pre-made sprite offsets, which duesn't provide
-     *   the current level of freedom.
-     *
-     * - Keep the quad vertices in the same place, but adjust their uv coordinates to move the sprite. This works fine,
-     *   but would require some empty space around the sprite in the atlas to prevent other textures from bleeding in
-     *   when the sprite is moved. For example, if a 16*16 sprite were placed into a 32*32 texture with 8 pixels of
-     *   blank space on all four sides, the sprite could be safely translated 8 pixels in any direction without other
-     *   sprites bleeding in. This works fine, but it causes tool part sprites to occupy 4* the texture space, which is
-     *   quite wasteful. A separate atlas could instead be used with 4 pixels of blank space around every sprite,
-     *   allowing them to share space with their neighbours, but it still isn't pretty.
-     *
-     * - Dynamically generate and store combined textures. Not much to say on this; I don't imagine it being easy.
-     *
-     * - Work out why no z fighting occurs when the quads are in the same place, and try to learn from it.
-     *
-     * I've given up for now. The small z offset works well enough for testing.
-     */
-    private static void face(QuadEmitter emitter, Layer layer, boolean back, int index) {
+    private static void face(QuadEmitter emitter, Layer layer, boolean back) {
         float left, right, z, uMin, uMax;
         if (back) {
             right = (left = layer.x * 0.0625f) + 1;
-            z = 0.46875f - (index * 0.000244140625f);
+            z = 0.46875f;
             uMin = layer.sprite.getMinU();
             uMax = layer.sprite.getMaxU();
         } else {
             left = (right = layer.x * 0.0625f) + 1;
-            z = 0.53125f + (index * 0.000244140625f);
+            z = 0.53125f;
             uMin = layer.sprite.getMaxU();
             uMax = layer.sprite.getMinU();
         }
@@ -225,6 +204,15 @@ public final class LayeredSpriteMesh {
     }
 
     @Environment(EnvType.CLIENT)
+    @Deprecated
     public record Layer(Sprite sprite, int x, int y) {
+    }
+
+    @Environment(EnvType.CLIENT)
+    @Deprecated
+    public interface SpriteExt {
+        int sar$getAtlasWidth();
+
+        int sar$getAtlasHeight();
     }
 }

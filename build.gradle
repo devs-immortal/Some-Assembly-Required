@@ -1,7 +1,7 @@
 //file:noinspection All
 
 plugins {
-    id 'fabric-loom' version '0.10-SNAPSHOT'
+    id 'fabric-loom' version '0.11-SNAPSHOT'
     id 'maven-publish'
 }
 
@@ -13,6 +13,9 @@ version = project.sar_version
 group = "net.immortaldevs"
 
 repositories {
+//    maven {
+//        url "https://jitpack.io"
+//    }
 }
 
 dependencies {
@@ -21,6 +24,7 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fapi_version}"
+//    modRuntimeOnly "com.github.caffeinemc:sodium-fabric:${project.sodium_version}"
 }
 
 processResources {

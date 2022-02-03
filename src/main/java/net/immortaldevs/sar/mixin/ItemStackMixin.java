@@ -1,9 +1,11 @@
 package net.immortaldevs.sar.mixin;
 
 import net.immortaldevs.sar.api.Component;
-import net.immortaldevs.sar.api.ComponentData;
+import net.immortaldevs.sar.api.RootComponentData;
 import net.immortaldevs.sar.api.SkeletalComponentData;
-import net.immortaldevs.sar.base.*;
+import net.immortaldevs.sar.base.ItemStackExt;
+import net.immortaldevs.sar.base.NbtRootComponentData;
+import net.immortaldevs.sar.base.NbtSkeletalComponentData;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
@@ -12,73 +14,69 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 
+import java.util.Optional;
+
+@SuppressWarnings({"OptionalAssignedToNull", "OptionalUsedAsFieldOrParameterType"})
 @Mixin(ItemStack.class)
 public abstract class ItemStackMixin implements ItemStackExt {
     @Shadow
-    public abstract @Nullable NbtCompound getNbt();
-
-    @Shadow
     public abstract NbtCompound getOrCreateSubNbt(String key);
 
+    @Shadow
+    private @Nullable NbtCompound nbt;
+
     @Unique
-    private @Nullable ComponentData componentRoot;
+    private @Nullable Optional<RootComponentData> componentRoot;
 
     @Override
-    public ComponentData sar$getComponentRoot() {
+    public Optional<RootComponentData> sar$getComponentRoot() {
         if (this.componentRoot != null) {
             return this.componentRoot;
         }
 
-        NbtCompound nbt = this.getNbt();
-        if (nbt == null || !nbt.contains("sar_data", NbtElement.COMPOUND_TYPE)) {
-            return null;
+        if (this.nbt == null || !this.nbt.contains("sar_data", NbtElement.COMPOUND_TYPE)) {
+            return this.componentRoot = Optional.empty();
         }
 
-        this.componentRoot = new NbtComponentData(null,
+        return this.componentRoot = Optional.of(new NbtRootComponentData(
                 () -> this.componentRoot = null,
-                nbt.getCompound("sar_data"),
-                true);
-
-        return this.componentRoot;
+                this.nbt.getCompound("sar_data")));
     }
 
     @Override
     public boolean sar$hasComponentRoot() {
-        if (this.componentRoot != null) return true;
-
-        NbtCompound nbt = this.getNbt();
-        return (nbt != null && nbt.contains("sar_data", NbtElement.COMPOUND_TYPE));
+        return this.nbt != null && this.nbt.contains("sar_data", NbtElement.COMPOUND_TYPE);
     }
 
     @Override
-    public @Nullable SkeletalComponentData sar$getSkeletalComponentRoot() {
+    public Optional<SkeletalComponentData> sar$getSkeletalComponentRoot() {
         if (this.componentRoot != null) {
-            return this.componentRoot;
+            // ;-;
+            return Optional.ofNullable(this.componentRoot.orElse(null));
         }
 
-        NbtCompound nbt = this.getNbt();
-        if (nbt == null || !nbt.contains("sar_data", NbtElement.COMPOUND_TYPE)) {
-            return null;
+        if (this.nbt == null || !this.nbt.contains("sar_data", NbtElement.COMPOUND_TYPE)) {
+            return Optional.empty();
         }
 
-        return new NbtSkeletalComponentData(null,
+        return Optional.of(new NbtSkeletalComponentData(null,
                 () -> this.componentRoot = null,
-                nbt.getCompound("sar_data"));
+                this.nbt.getCompound("sar_data"),
+                Component.ROOT));
     }
 
     @Override
-    public SkeletalComponentData sar$getOrCreateSkeletalComponentRoot(Component type) {
-        if (this.componentRoot != null) {
-            return this.componentRoot;
+    public SkeletalComponentData sar$getOrCreateSkeletalComponentRoot() {
+        if (this.componentRoot != null && this.componentRoot.isPresent()) {
+            return this.componentRoot.get();
         }
 
         NbtCompound nbt = this.getOrCreateSubNbt("sar_data");
-        if (!nbt.contains("id", NbtElement.STRING_TYPE)) {
-            nbt.putString("id", SarRegistries.COMPONENT.getId(type).toString());
-        }
+        nbt.putString("id", "sar:root");
 
         return new NbtSkeletalComponentData(null,
                 () -> this.componentRoot = null,
-                nbt);
+                nbt,
+                Component.ROOT);
     }
 }

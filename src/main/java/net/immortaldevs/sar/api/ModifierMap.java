@@ -1,20 +1,24 @@
 package net.immortaldevs.sar.api;
 
-import org.jetbrains.annotations.Nullable;
-
 import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
-@SuppressWarnings("unused")
-public interface ModifierMap {
-    <T extends Modifier> void put(Class<T> key, T value);
+@SuppressWarnings({"unused", "UnusedReturnValue"})
+public interface ModifierMap extends FixedModifierMap {
+    <T extends Modifier> T put(Class<T> key, T value);
 
-    <T extends Modifier> @Nullable T get(Class<T> key);
+    <T extends Modifier> T merge(Class<T> key, T value, BiFunction<T, T, T> remappingFunction);
 
-    <T extends Modifier> T getOr(Class<T> key, T or);
+    <T extends Modifier> T putIfAbsent(Class<T> key, T value);
 
-    <T extends Modifier> void merge(Class<T> key, T value, BiFunction<T, T, T> remappingFunction);
+    <T extends Modifier> T computeIfAbsent(Class<T> key, Function<Class<T>, T> mappingFunction);
 
-    <T extends Modifier> void putIfAbsent(Class<T> key, T value);
+    <T extends Modifier> T computeIfPresent(Class<T> key, BiFunction<Class<T>, T, T> remappingFunction);
 
-    boolean contains(Class<? extends Modifier> key);
+    <T extends Modifier> T compute(Class<T> key, BiFunction<Class<T>, T, T> remappingFunction);
+
+    <T extends Modifier> T replace(Class<T> key, T value);
+
+    <T extends Modifier> T remove(Class<T> key);
 }
