@@ -2,16 +2,25 @@ package net.immortaldevs.sar.base;
 
 import net.immortaldevs.sar.api.RootComponentData;
 import net.immortaldevs.sar.api.SkeletalComponentData;
+import org.apache.commons.lang3.NotImplementedException;
 
 import java.util.Optional;
 
 @SuppressWarnings("unused")
 public interface ItemStackExt {
-    Optional<RootComponentData> sar$getComponentRoot();
+    default Optional<RootComponentData> sar$getComponentRoot() {
+        throw new NotImplementedException();
+    }
 
-    boolean sar$hasComponentRoot();
+    default boolean sar$hasComponentRoot() {
+        throw new NotImplementedException();
+    }
 
-    Optional<SkeletalComponentData> sar$getSkeletalComponentRoot();
+    default Optional<SkeletalComponentData> sar$getSkeletalComponentRoot() {
+        throw new NotImplementedException();
+    }
 
-    SkeletalComponentData sar$getOrCreateSkeletalComponentRoot();
+    default SkeletalComponentData sar$getOrCreateSkeletalComponentRoot() {
+        throw new NotImplementedException();
+    }
 }

@@ -1,7 +1,6 @@
 package net.immortaldevs.sar.test;
 
 import net.immortaldevs.sar.api.Component;
-import net.immortaldevs.sar.base.ItemStackExt;
 import net.minecraft.inventory.CraftingInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -14,7 +13,6 @@ import net.minecraft.world.World;
 
 import static net.immortaldevs.sar.base.Sar.id;
 
-@SuppressWarnings("RedundantCast")
 public class PotatoRecipe extends SpecialCraftingRecipe {
     public static final SpecialRecipeSerializer<PotatoRecipe> SERIALISER = new SpecialRecipeSerializer<>(PotatoRecipe::new);
 
@@ -66,8 +64,7 @@ public class PotatoRecipe extends SpecialCraftingRecipe {
             return ItemStack.EMPTY;
         }
 
-        ((ItemStackExt) potato)
-                .sar$getOrCreateSkeletalComponentRoot()
+        potato.sar$getOrCreateSkeletalComponentRoot()
                 .getOrCreateChild("potato", TestComponents.POTATO)
                 .createChild("filling", filling);
 

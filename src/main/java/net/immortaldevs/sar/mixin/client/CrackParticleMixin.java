@@ -3,7 +3,6 @@ package net.immortaldevs.sar.mixin.client;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.immortaldevs.sar.api.RootComponentData;
-import net.immortaldevs.sar.base.ItemStackExt;
 import net.immortaldevs.sar.base.client.ClientComponents;
 import net.immortaldevs.sar.base.client.CrackParticleSpriteModifier;
 import net.minecraft.client.particle.CrackParticle;
@@ -17,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
 
-@SuppressWarnings("RedundantCast")
 @Environment(EnvType.CLIENT)
 @Mixin(CrackParticle.class)
 public abstract class CrackParticleMixin extends SpriteBillboardParticle {
@@ -31,7 +29,7 @@ public abstract class CrackParticleMixin extends SpriteBillboardParticle {
                     shift = At.Shift.AFTER))
     private void init(ClientWorld world, double x, double y, double z, ItemStack stack, CallbackInfo ci) {
         Optional<RootComponentData> data;
-        if ((data = ((ItemStackExt) stack).sar$getComponentRoot()).isEmpty()) return;
+        if ((data = stack.sar$getComponentRoot()).isEmpty()) return;
 
         var modifier = ClientComponents.getModifiers(data.get())
                 .get(CrackParticleSpriteModifier.class);
