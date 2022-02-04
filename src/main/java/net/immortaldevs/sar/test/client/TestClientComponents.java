@@ -3,9 +3,15 @@ package net.immortaldevs.sar.test.client;
 import net.immortaldevs.sar.base.client.ClientComponents;
 import net.immortaldevs.sar.base.client.CrackParticleSpriteModifier;
 import net.immortaldevs.sar.base.client.ItemRenderers;
+import net.immortaldevs.sar.base.client.VertexConsumerModifier;
 import net.immortaldevs.sar.test.PotatoComponent;
 import net.immortaldevs.sar.test.TestComponents;
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.VertexConsumers;
 import net.minecraft.client.render.model.BakedModel;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 
 import java.util.function.Function;
@@ -41,5 +47,9 @@ public final class TestClientComponents {
             data.addModifier(ItemRenderers.ENTITY_TRANSLUCENT_CULL_LAYERED.get(nitroglycerin));
             data.addModifier(CrackParticleSpriteModifier.of(nitroglycerin));
         });
+
+        ClientComponents.register(TestComponents.CUM, data ->
+                data.addModifier((VertexConsumerModifier) (model, stack, matrices, provider, vertices) ->
+                        VertexConsumers.union(provider.getBuffer(TestRenderLayers.CUM), vertices)));
     }
 }

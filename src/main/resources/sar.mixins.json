@@ -5,9 +5,11 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "EnchantmentHelperMixin",
+    "ItemAccessor",
     "ItemStackMixin",
     "LivingEntityMixin",
     "RegistryAccessor",
+    "client.BufferBuilderStorageMixin",
     "client.CrackParticleMixin",
     "client.GameRendererMixin",
     "client.ItemRendererMixin",

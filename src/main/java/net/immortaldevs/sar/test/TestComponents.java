@@ -10,10 +10,12 @@ public final class TestComponents {
     public static final Component POTATO = new PotatoComponent();
     public static final Component CHEESE = new CheeseComponent();
     public static final Component NITROGLYCERIN = new NitroglycerinComponent();
+    public static final Component CUM = new CumComponent();
 
     public static void init() {
         Registry.register(SarRegistries.COMPONENT, id("potato"), POTATO);
         Registry.register(SarRegistries.COMPONENT, id("cheese"), CHEESE);
         Registry.register(SarRegistries.COMPONENT, id("nitroglycerin"), NITROGLYCERIN);
+        Registry.register(SarRegistries.COMPONENT, id("cum"), CUM);
     }
 }
