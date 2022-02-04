@@ -6,19 +6,23 @@ import net.minecraft.item.ItemStack;
 
 @FunctionalInterface
 public interface HungerModifier extends Modifier {
-    int apply(ItemStack stack, int hunger);
-
-    static HungerModifier multiply(int numerator, int denominator) {
-        return (stack, hunger) -> (hunger * numerator) / denominator;
-    }
-
-    static HungerModifier add(int value) {
-        return (stack, hunger) -> hunger + value;
-    }
+    void apply(ItemStack stack, Values values);
 
     @Override
     default void register(ModifierMap modifierMap) {
-        modifierMap.merge(HungerModifier.class, this, (a, b) -> (stack, hunger) ->
-                b.apply(stack, a.apply(stack, hunger)));
+        modifierMap.merge(HungerModifier.class, this, (a, b) -> (stack, values) -> {
+            a.apply(stack, values);
+            b.apply(stack, values);
+        });
+    }
+
+    final class Values {
+        public int food;
+        public float saturationModifier;
+
+        public Values(int food, float saturationModifier) {
+            this.food = food;
+            this.saturationModifier = saturationModifier;
+        }
     }
 }

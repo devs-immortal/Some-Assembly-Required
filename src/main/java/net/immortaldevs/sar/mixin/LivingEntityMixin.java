@@ -1,7 +1,7 @@
 package net.immortaldevs.sar.mixin;
 
 import net.immortaldevs.sar.base.FoodEffectModifier;
-import net.immortaldevs.sar.base.client.Util;
+import net.immortaldevs.sar.base.Util;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;

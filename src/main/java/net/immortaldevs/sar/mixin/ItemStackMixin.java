@@ -6,7 +6,6 @@ import net.immortaldevs.sar.api.Component;
 import net.immortaldevs.sar.api.RootComponentData;
 import net.immortaldevs.sar.api.SkeletalComponentData;
 import net.immortaldevs.sar.base.*;
-import net.immortaldevs.sar.base.client.Util;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;

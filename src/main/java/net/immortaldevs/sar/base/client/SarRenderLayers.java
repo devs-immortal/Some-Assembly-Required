@@ -24,7 +24,7 @@ public final class SarRenderLayers extends RenderLayer {
                             .lightmap(RenderPhase.ENABLE_LIGHTMAP)
                             .overlay(RenderPhase.ENABLE_OVERLAY_COLOR)
                             .writeMaskState(RenderPhase.COLOR_MASK)
-                            .build(true)));
+                            .build(false)));
 
     public static final Function<Identifier, RenderLayer> TRANSLUCENT_GHOST = Util.memoize(id ->
             RenderLayerFactory.get().create("sar_translucent_ghost",
@@ -37,7 +37,9 @@ public final class SarRenderLayers extends RenderLayer {
                             .shader(new RenderPhase.Shader(SarShaders::getTranslucentGhost))
                             .texture(new Texture(id, false, false))
                             .writeMaskState(RenderPhase.DEPTH_MASK)
-                            .build(false)));
+                            .cull(DISABLE_CULLING)
+                            .transparency(GLINT_TRANSPARENCY)
+                            .build(true)));
 
     private SarRenderLayers(String name, VertexFormat vertexFormat, VertexFormat.DrawMode drawMode, int expectedBufferSize, boolean hasCrumbling, boolean translucent, Runnable startAction, Runnable endAction) {
         super(name, vertexFormat, drawMode, expectedBufferSize, hasCrumbling, translucent, startAction, endAction);

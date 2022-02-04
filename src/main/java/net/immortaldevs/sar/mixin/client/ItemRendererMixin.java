@@ -3,7 +3,6 @@ package net.immortaldevs.sar.mixin.client;
 import net.immortaldevs.sar.api.RootComponentData;
 import net.immortaldevs.sar.base.client.ClientComponents;
 import net.immortaldevs.sar.base.client.ItemRendererModifier;
-import net.immortaldevs.sar.base.client.Util;
 import net.immortaldevs.sar.base.client.VertexConsumerModifier;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
