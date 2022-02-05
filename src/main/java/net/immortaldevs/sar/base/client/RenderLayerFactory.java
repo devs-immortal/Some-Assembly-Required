@@ -1,8 +1,11 @@
 package net.immortaldevs.sar.base.client;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexFormat;
 
+@Environment(EnvType.CLIENT)
 public final class RenderLayerFactory extends RenderLayer {
     private static Factory factory;
 
@@ -22,6 +25,7 @@ public final class RenderLayerFactory extends RenderLayer {
         throw new IllegalStateException();
     }
 
+    @Environment(EnvType.CLIENT)
     public interface Factory {
         RenderLayer create(String name, VertexFormat vertexFormat, VertexFormat.DrawMode drawMode, int expectedBufferSize, boolean hasCrumbling, boolean translucent, RenderLayer.MultiPhaseParameters phases);
     }

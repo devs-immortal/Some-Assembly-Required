@@ -1,5 +1,7 @@
 package net.immortaldevs.sar.base.client;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.immortaldevs.sar.base.Util;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.model.BakedModel;
@@ -12,6 +14,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
 
+@Environment(EnvType.CLIENT)
 @SuppressWarnings("unused")
 public final class ClientUtil {
     private static final Direction[] DIRECTIONS_AND_NULL = Arrays.copyOf(Direction.values(), 7);

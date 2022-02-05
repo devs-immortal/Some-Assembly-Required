@@ -1,5 +1,7 @@
 package net.immortaldevs.sar.base.client;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.immortaldevs.sar.api.Modifier;
 import net.immortaldevs.sar.api.ModifierMap;
 import net.minecraft.client.render.model.BakedModel;
@@ -8,6 +10,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.function.Supplier;
 
+@Environment(EnvType.CLIENT)
 @FunctionalInterface
 public interface ItemRendererModifier extends Modifier {
     void render(

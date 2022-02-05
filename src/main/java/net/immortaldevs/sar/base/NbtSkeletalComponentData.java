@@ -2,6 +2,7 @@ package net.immortaldevs.sar.base;
 
 import com.google.common.base.MoreObjects;
 import net.immortaldevs.sar.api.Component;
+import net.immortaldevs.sar.api.SarRegistries;
 import net.immortaldevs.sar.api.SkeletalComponentData;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;

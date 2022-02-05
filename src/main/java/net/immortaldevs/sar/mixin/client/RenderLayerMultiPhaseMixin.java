@@ -1,10 +1,13 @@
 package net.immortaldevs.sar.mixin.client;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.immortaldevs.sar.base.client.RenderLayerFactory;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexFormat;
 import org.spongepowered.asm.mixin.Mixin;
 
+@Environment(EnvType.CLIENT)
 @SuppressWarnings("unused")
 @Mixin(targets = "net/minecraft/client/render/RenderLayer$MultiPhase")
 public class RenderLayerMultiPhaseMixin extends RenderLayer {

@@ -1,6 +1,8 @@
 package net.immortaldevs.sar.mixin.client;
 
 import com.mojang.datafixers.util.Pair;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.immortaldevs.sar.base.client.SarShaders;
 import net.minecraft.client.gl.Program;
 import net.minecraft.client.render.GameRenderer;
@@ -17,6 +19,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.function.Consumer;
 
+@Environment(EnvType.CLIENT)
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
     @Inject(method = "loadShaders",

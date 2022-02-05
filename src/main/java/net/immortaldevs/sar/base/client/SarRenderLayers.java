@@ -1,5 +1,7 @@
 package net.immortaldevs.sar.base.client;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
 import net.minecraft.client.render.VertexFormat;
@@ -9,6 +11,7 @@ import net.minecraft.util.Util;
 
 import java.util.function.Function;
 
+@Environment(EnvType.CLIENT)
 public final class SarRenderLayers extends RenderLayer {
     public static final Function<Identifier, RenderLayer> ENTITY_TRANSLUCENT_CULL_LAYERED = Util.memoize(id ->
             RenderLayerFactory.get().create("sar_entity_translucent_cull_layered",

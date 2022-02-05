@@ -1,7 +1,10 @@
 package net.immortaldevs.sar.test.client;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.immortaldevs.sar.base.client.ComponentModel;
 
+@Environment(EnvType.CLIENT)
 public final class TestComponentModels {
     public static final ComponentModel POTATO = new ComponentModel("sar", "potato");
     public static final ComponentModel FILLED_POTATO = new ComponentModel("sar", "filled_potato");

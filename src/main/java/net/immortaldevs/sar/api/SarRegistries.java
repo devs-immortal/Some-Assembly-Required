@@ -1,6 +1,5 @@
-package net.immortaldevs.sar.base;
+package net.immortaldevs.sar.api;
 
-import net.immortaldevs.sar.api.Component;
 import net.immortaldevs.sar.mixin.RegistryAccessor;
 import net.minecraft.util.registry.DefaultedRegistry;
 import net.minecraft.util.registry.Registry;

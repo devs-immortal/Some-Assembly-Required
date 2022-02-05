@@ -1,7 +1,7 @@
 package net.immortaldevs.sar.test;
 
 import net.immortaldevs.sar.api.Component;
-import net.immortaldevs.sar.base.SarRegistries;
+import net.immortaldevs.sar.api.SarRegistries;
 import net.minecraft.util.registry.Registry;
 
 import static net.immortaldevs.sar.base.Sar.id;

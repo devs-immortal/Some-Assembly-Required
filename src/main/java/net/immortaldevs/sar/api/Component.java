@@ -1,7 +1,5 @@
 package net.immortaldevs.sar.api;
 
-import net.immortaldevs.sar.base.SarRegistries;
-
 public class Component {
     public static final Component UNKNOWN = new Component();
     public static final Component ROOT = new Component();

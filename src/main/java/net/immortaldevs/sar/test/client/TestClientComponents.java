@@ -1,5 +1,7 @@
 package net.immortaldevs.sar.test.client;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.immortaldevs.sar.base.client.ClientComponents;
 import net.immortaldevs.sar.base.client.ComponentModel;
 import net.immortaldevs.sar.base.client.CrackParticleSpriteModifier;
@@ -7,6 +9,7 @@ import net.immortaldevs.sar.base.client.ItemRendererModifier;
 import net.immortaldevs.sar.test.PotatoComponent;
 import net.immortaldevs.sar.test.TestComponents;
 
+@Environment(EnvType.CLIENT)
 public final class TestClientComponents {
     public static void init() {
         ClientComponents.register(TestComponents.POTATO, data -> {

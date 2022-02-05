@@ -1,5 +1,7 @@
 package net.immortaldevs.sar.mixin.client;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.immortaldevs.sar.api.RootComponentData;
 import net.immortaldevs.sar.base.client.*;
 import net.minecraft.client.render.RenderLayer;
@@ -18,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
 
+@Environment(EnvType.CLIENT)
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin {
     @Shadow

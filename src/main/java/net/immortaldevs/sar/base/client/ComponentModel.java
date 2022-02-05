@@ -1,5 +1,7 @@
 package net.immortaldevs.sar.base.client;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.ModelIdentifier;
@@ -9,6 +11,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+@Environment(EnvType.CLIENT)
 public final class ComponentModel implements Supplier<BakedModel> {
     private static final List<ComponentModel> MODELS = new ArrayList<>();
 
