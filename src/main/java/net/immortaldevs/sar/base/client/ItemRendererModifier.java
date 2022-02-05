@@ -2,32 +2,34 @@ package net.immortaldevs.sar.base.client;
 
 import net.immortaldevs.sar.api.Modifier;
 import net.immortaldevs.sar.api.ModifierMap;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 
-import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-@SuppressWarnings("unused")
 @FunctionalInterface
 public interface ItemRendererModifier extends Modifier {
-    void render(ItemStack stack, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay);
+    void render(
+            MultiVertexConsumerProvider provider,
+            ItemStack stack,
+            MatrixStack matrices,
+            int light,
+            int overlay
+    );
 
-    default ItemRendererModifier transform(Consumer<MatrixStack> consumer) {
-        return (stack, matrices, vertexConsumers, light, overlay) -> {
-            matrices.push();
-            consumer.accept(matrices);
-            this.render(stack, matrices, vertexConsumers, light, overlay);
-            matrices.pop();
-        };
+    static ItemRendererModifier of(Supplier<BakedModel> model) {
+        return (provider, stack, matrices, light, overlay) ->
+                ClientUtil.renderModel(provider.get(MultiRenderLayer.ENTITY_TRANSLUCENT_CULL_GHOST),
+                        model.get(), matrices.peek(), light, overlay);
     }
 
     @Override
     default void register(ModifierMap modifierMap) {
         modifierMap.merge(ItemRendererModifier.class, this, (a, b) ->
-                (stack, matrices, vertexConsumers, light, overlay) -> {
-                    a.render(stack, matrices, vertexConsumers, light, overlay);
-                    b.render(stack, matrices, vertexConsumers, light, overlay);
+                (provider, stack, matrices, light, overlay) -> {
+                    a.render(provider, stack, matrices, light, overlay);
+                    b.render(provider, stack, matrices, light, overlay);
                 });
     }
 }

@@ -16,7 +16,7 @@ public final class SarRenderLayers extends RenderLayer {
                     VertexFormat.DrawMode.QUADS,
                     256,
                     true,
-                    true,
+                    false,
                     MultiPhaseParameters.builder()
                             .shader(RenderPhase.ENTITY_TRANSLUCENT_CULL_SHADER)
                             .texture(new Texture(id, false, false))
@@ -37,8 +37,6 @@ public final class SarRenderLayers extends RenderLayer {
                             .shader(new RenderPhase.Shader(SarShaders::getTranslucentGhost))
                             .texture(new Texture(id, false, false))
                             .writeMaskState(RenderPhase.DEPTH_MASK)
-                            .cull(DISABLE_CULLING)
-                            .transparency(GLINT_TRANSPARENCY)
                             .build(true)));
 
     private SarRenderLayers(String name, VertexFormat vertexFormat, VertexFormat.DrawMode drawMode, int expectedBufferSize, boolean hasCrumbling, boolean translucent, Runnable startAction, Runnable endAction) {

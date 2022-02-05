@@ -8,15 +8,12 @@ import net.minecraft.util.Identifier;
 
 public final class Sar implements ModInitializer {
     public static final String SAR = "sar";
-    public static final boolean TESTING_ENABLED = true;
 
     @Override
     public void onInitialize() {
-        if (TESTING_ENABLED) {
-            TestItems.init();
-            TestComponents.init();
-            TestRecipeSerialisers.init();
-        }
+        TestItems.init();
+        TestComponents.init();
+        TestRecipeSerialisers.init();
     }
 
     public static Identifier id(String path) {

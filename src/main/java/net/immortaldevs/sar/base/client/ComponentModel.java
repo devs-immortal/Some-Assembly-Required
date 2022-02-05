@@ -3,15 +3,13 @@ package net.immortaldevs.sar.base.client;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.ModelIdentifier;
-import net.minecraft.item.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
-public final class ComponentModel implements Supplier<BakedModel>, Function<ItemStack, BakedModel> {
+public final class ComponentModel implements Supplier<BakedModel> {
     private static final List<ComponentModel> MODELS = new ArrayList<>();
 
     private final ModelIdentifier id;
@@ -28,11 +26,6 @@ public final class ComponentModel implements Supplier<BakedModel>, Function<Item
 
     @Override
     public BakedModel get() {
-        return this.bakedModel;
-    }
-
-    @Override
-    public BakedModel apply(ItemStack stack) {
         return this.bakedModel;
     }
 

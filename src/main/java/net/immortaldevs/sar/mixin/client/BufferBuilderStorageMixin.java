@@ -2,7 +2,6 @@ package net.immortaldevs.sar.mixin.client;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectLinkedOpenHashMap;
 import net.immortaldevs.sar.base.client.SarTexturedRenderLayers;
-import net.immortaldevs.sar.test.client.TestRenderLayers;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.BufferBuilderStorage;
 import net.minecraft.client.render.RenderLayer;
@@ -24,6 +23,5 @@ public abstract class BufferBuilderStorageMixin {
     private void method_2999(Object2ObjectLinkedOpenHashMap<RenderLayer, BufferBuilder> map, CallbackInfo ci) {
         assignBufferBuilder(map, SarTexturedRenderLayers.TRANSLUCENT_GHOST);
         assignBufferBuilder(map, SarTexturedRenderLayers.ENTITY_TRANSLUCENT_CULL_LAYERED);
-        assignBufferBuilder(map, TestRenderLayers.CUM);
     }
 }

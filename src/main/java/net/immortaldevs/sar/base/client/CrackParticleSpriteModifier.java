@@ -10,6 +10,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.Random;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * A modifier that alters the texture of crack particles (eating, breaking, etc.)
@@ -38,8 +39,8 @@ public interface CrackParticleSpriteModifier extends Modifier {
         return this.get(stack, random);
     }
 
-    static CrackParticleSpriteModifier of(Function<ItemStack, BakedModel> function) {
-        return (stack, random) -> function.apply(stack).getParticleSprite();
+    static CrackParticleSpriteModifier of(Supplier<BakedModel> model) {
+        return (stack, random) -> model.get().getParticleSprite();
     }
 
     @Override
