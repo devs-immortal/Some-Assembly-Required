@@ -23,15 +23,6 @@ public interface ItemRendererModifier extends Modifier {
             int overlay
     );
 
-    static ItemRendererModifier transform(ItemRendererModifier modifier, Consumer<MatrixStack> transformation) {
-        return (provider, stack, matrices, light, overlay) -> {
-            matrices.push();
-            transformation.accept(matrices);
-            modifier.applyItemRendererModifier(provider, stack, matrices, light, overlay);
-            matrices.pop();
-        };
-    }
-
     static ItemRendererModifier of(Supplier<BakedModel> model) {
         return (provider, stack, matrices, light, overlay) ->
                 ClientUtil.renderModel(provider.get(MultiRenderLayer.ENTITY_TRANSLUCENT_CULL_GHOST),
