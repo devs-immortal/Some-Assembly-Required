@@ -1,7 +1,7 @@
 package net.immortaldevs.sar.mixin;
 
 import net.immortaldevs.divineintervention.injection.ModifyOperand;
-import net.immortaldevs.sar.base.FoodModifier;
+import net.immortaldevs.sar.base.HungerModifier;
 import net.immortaldevs.sar.base.SaturationModifierModifier;
 import net.immortaldevs.sar.base.Util;
 import net.minecraft.entity.player.HungerManager;
@@ -16,10 +16,10 @@ public abstract class HungerManagerMixin {
     @ModifyOperand(method = "eat",
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/item/FoodComponent;getHunger()I"))
-    private int modifyFood(int food, Item item, ItemStack stack) {
-        FoodModifier modifier = Util.getModifier(stack, FoodModifier.class);
-        if (modifier == null) return food;
-        return modifier.applyFoodModifier(stack, food);
+    private int modifyHunger(int hunger, Item item, ItemStack stack) {
+        HungerModifier modifier = Util.getModifier(stack, HungerModifier.class);
+        if (modifier == null) return hunger;
+        return modifier.applyHungerModifier(stack, hunger);
     }
 
     @ModifyOperand(method = "eat",

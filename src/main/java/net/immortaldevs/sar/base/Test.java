@@ -13,7 +13,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.world.World;
 
-public class Test implements FoodEffectModifier, FoodModifier, SaturationModifierModifier, AttributeModifierModifier, UseOnBlockModifier, UseOnEntityModifier {
+public class Test implements FoodEffectModifier, HungerModifier, SaturationModifierModifier, AttributeModifierModifier, UseOnBlockModifier, UseOnEntityModifier {
     @Override
     public void applyAttributeModifierModifier(ItemStack stack, EquipmentSlot slot, Multimap<EntityAttribute, EntityAttributeModifier> modifiers) {
 
@@ -27,7 +27,7 @@ public class Test implements FoodEffectModifier, FoodModifier, SaturationModifie
     @Override
     public void register(ModifierMap modifierMap) {
         FoodEffectModifier.super.register(modifierMap);
-        FoodModifier.super.register(modifierMap);
+        HungerModifier.super.register(modifierMap);
         SaturationModifierModifier.super.register(modifierMap);
         AttributeModifierModifier.super.register(modifierMap);
         UseOnBlockModifier.super.register(modifierMap);
@@ -35,7 +35,7 @@ public class Test implements FoodEffectModifier, FoodModifier, SaturationModifie
     }
 
     @Override
-    public int applyFoodModifier(ItemStack stack, int food) {
+    public int applyHungerModifier(ItemStack stack, int food) {
         return 0;
     }
 
