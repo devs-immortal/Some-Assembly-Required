@@ -7,6 +7,7 @@ import net.minecraft.nbt.NbtList;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Consumer;
+import java.util.function.ObjIntConsumer;
 
 public class NbtLarvalComponentData extends NbtSkeletalComponentData implements LarvalComponentData {
     private final Consumer<LarvalComponentData> initialiser;
@@ -53,16 +54,17 @@ public class NbtLarvalComponentData extends NbtSkeletalComponentData implements 
     }
 
     @Override
-    public void loadChildren(String name, Consumer<LarvalComponentData> transformer) {
+    public void loadChildren(String name, ObjIntConsumer<LarvalComponentData> transformer) {
         NbtList nbtChildren = this.nbt.getCompound("components")
                 .getList(name, NbtElement.COMPOUND_TYPE);
 
         for (int i = 0; i < nbtChildren.size(); i++) {
+            int j = i; // for lambda
             new NbtLarvalComponentData(this,
                     this.changedCallback,
                     nbtChildren.getCompound(i),
                     this.initialiser,
-                    transformer,
+                    child -> transformer.accept(child, j),
                     this::addModifier);
         }
     }
