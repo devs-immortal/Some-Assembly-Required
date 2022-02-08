@@ -65,10 +65,7 @@ public abstract class ItemRendererMixin {
         };
 
         modifier.applyItemRendererModifier(provider, stack, matrices, light, overlay);
-
-        if (model == NullModel.INSTANCE) {
-            matrices.pop();
-            ci.cancel();
-        }
+        matrices.pop();
+        ci.cancel();
     }
 }
