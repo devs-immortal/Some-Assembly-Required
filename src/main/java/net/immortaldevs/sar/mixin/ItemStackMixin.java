@@ -46,7 +46,7 @@ public abstract class ItemStackMixin implements ItemStackExt {
         AttributeModifierModifier modifier = Util.getModifier(this, AttributeModifierModifier.class);
         if (modifier == null) return;
         Multimap<EntityAttribute, EntityAttributeModifier> out = HashMultimap.create(cir.getReturnValue());
-        modifier.apply((ItemStack) (Object) this, slot, out);
+        modifier.applyAttributeModifierModifier((ItemStack) (Object) this, slot, out);
         cir.setReturnValue(out);
     }
 
@@ -56,7 +56,7 @@ public abstract class ItemStackMixin implements ItemStackExt {
     private void useOnEntity(PlayerEntity user, LivingEntity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
         UseOnEntityModifier modifier = Util.getModifier(this, UseOnEntityModifier.class);
         if (modifier == null) return;
-        ActionResult result = modifier.apply((ItemStack) (Object) this, user, entity, hand);
+        ActionResult result = modifier.applyUseOnEntityModifier((ItemStack) (Object) this, user, entity, hand);
         if (result == ActionResult.PASS) return;
         cir.setReturnValue(result);
     }
@@ -67,7 +67,7 @@ public abstract class ItemStackMixin implements ItemStackExt {
     private void useOnBlock(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
         UseOnBlockModifier modifier = Util.getModifier(this, UseOnBlockModifier.class);
         if (modifier == null) return;
-        ActionResult result = modifier.apply(context);
+        ActionResult result = modifier.applyUseOnBlockModifier(context);
         if (result == ActionResult.PASS) return;
         cir.setReturnValue(result);
     }

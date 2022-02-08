@@ -7,14 +7,14 @@ import net.minecraft.util.ActionResult;
 
 @FunctionalInterface
 public interface UseOnBlockModifier extends Modifier {
-    ActionResult apply(ItemUsageContext context);
+    ActionResult applyUseOnBlockModifier(ItemUsageContext context);
 
     @Override
     default void register(ModifierMap modifierMap) {
         modifierMap.merge(UseOnBlockModifier.class, this, (a, b) -> context -> {
-            ActionResult result = a.apply(context);
+            ActionResult result = a.applyUseOnBlockModifier(context);
             if (result != ActionResult.PASS) return result;
-            return b.apply(context);
+            return b.applyUseOnBlockModifier(context);
         });
     }
 }

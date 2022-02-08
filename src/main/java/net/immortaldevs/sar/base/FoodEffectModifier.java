@@ -9,7 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 public interface FoodEffectModifier extends Modifier {
-    void apply(ItemStack stack, World world, LivingEntity targetEntity);
+    void applyFoodEffectModifier(ItemStack stack, World world, LivingEntity targetEntity);
 
     static FoodEffectModifier of(StatusEffect effect, int duration, int amplifier) {
         return (stack, world, targetEntity) ->
@@ -19,8 +19,8 @@ public interface FoodEffectModifier extends Modifier {
     @Override
     default void register(ModifierMap modifierMap) {
         modifierMap.merge(FoodEffectModifier.class, this, (a, b) -> (stack, world, targetEntity) -> {
-            a.apply(stack, world, targetEntity);
-            b.apply(stack, world, targetEntity);
+            a.applyFoodEffectModifier(stack, world, targetEntity);
+            b.applyFoodEffectModifier(stack, world, targetEntity);
         });
     }
 }

@@ -13,9 +13,9 @@ version = project.sar_version
 group = "net.immortaldevs"
 
 repositories {
-//    maven {
-//        url "https://jitpack.io"
-//    }
+    maven {
+        url "https://jitpack.io"
+    }
 }
 
 dependencies {
@@ -24,7 +24,11 @@ dependencies {
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fapi_version}"
+    modImplementation include("com.github.devs-immortal:Divine-Intervention:${project.divine_intervention_version}")
+
 //    modRuntimeOnly "com.github.caffeinemc:sodium-fabric:${project.sodium_version}"
+
+    annotationProcessor "com.github.devs-immortal:Divine-Intervention:${project.divine_intervention_version}"
 }
 
 processResources {

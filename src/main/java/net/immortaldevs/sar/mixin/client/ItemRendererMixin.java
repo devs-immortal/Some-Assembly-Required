@@ -71,7 +71,7 @@ public abstract class ItemRendererMixin {
         this.renderBakedItemModel(model, stack, light, overlay, matrices,
                 provider.get(MultiRenderLayer.ENTITY_TRANSLUCENT_CULL_GHOST));
 
-        modifier.render(provider, stack, matrices, light, overlay);
+        modifier.applyItemRendererModifier(provider, stack, matrices, light, overlay);
         matrices.pop();
         ci.cancel();
     }

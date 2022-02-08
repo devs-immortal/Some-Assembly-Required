@@ -18,6 +18,6 @@ public abstract class LivingEntityMixin {
     private void applyFoodEffects(ItemStack stack, World world, LivingEntity targetEntity, CallbackInfo ci) {
         FoodEffectModifier modifier = Util.getModifier(stack, FoodEffectModifier.class);
         if (modifier == null) return;
-        modifier.apply(stack, world, targetEntity);
+        modifier.applyFoodEffectModifier(stack, world, targetEntity);
     }
 }

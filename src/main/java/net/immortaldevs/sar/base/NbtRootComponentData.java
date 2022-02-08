@@ -2,7 +2,6 @@ package net.immortaldevs.sar.base;
 
 import net.immortaldevs.sar.api.*;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.nbt.NbtElement;
 
 import java.util.function.Consumer;
 
@@ -11,7 +10,6 @@ public class NbtRootComponentData extends NbtSkeletalComponentData implements Ro
 
     public NbtRootComponentData(Runnable changedCallback, NbtCompound nbt) {
         super(null, changedCallback, nbt, Component.ROOT);
-
         this.modifierMap = this.collect(data -> data.type().init(data));
     }
 
@@ -27,16 +25,15 @@ public class NbtRootComponentData extends NbtSkeletalComponentData implements Ro
 
     private HashModifierMap collect(Consumer<LarvalComponentData> initialiser) {
         HashModifierMap modifierMap = new HashModifierMap();
+        NbtCompound components = this.nbt.getCompound("components");
 
-        for (String key : this.nbt.getKeys()) {
-            if (sanitiseChildName(key).equals(key) && this.nbt.contains(key, NbtElement.COMPOUND_TYPE)) {
-                new NbtLarvalComponentData(this,
-                        this.changedCallback,
-                        this.nbt.getCompound(key),
-                        initialiser,
-                        data -> {},
-                        modifier -> modifier.register(modifierMap));
-            }
+        for (String key : components.getKeys()) {
+            new NbtLarvalComponentData(this,
+                    this.changedCallback,
+                    components.getCompound(key),
+                    initialiser,
+                    data -> {},
+                    modifier -> modifier.register(modifierMap));
         }
 
         return modifierMap;

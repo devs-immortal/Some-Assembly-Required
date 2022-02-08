@@ -18,6 +18,6 @@ public abstract class EnchantmentHelperMixin {
     private static void getLevel(Enchantment enchantment, ItemStack stack, CallbackInfoReturnable<Integer> cir) {
         EnchantmentLevelModifier modifier = Util.getModifier(stack, EnchantmentLevelModifier.class);
         if (modifier == null) return;
-        cir.setReturnValue(modifier.apply(enchantment, stack, cir.getReturnValueI()));
+        cir.setReturnValue(modifier.applyEnchantmentLevelModifier(enchantment, stack, cir.getReturnValueI()));
     }
 }

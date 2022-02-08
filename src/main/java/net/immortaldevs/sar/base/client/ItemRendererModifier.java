@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 @Environment(EnvType.CLIENT)
 @FunctionalInterface
 public interface ItemRendererModifier extends Modifier {
-    void render(
+    void applyItemRendererModifier(
             MultiVertexConsumerProvider provider,
             ItemStack stack,
             MatrixStack matrices,
@@ -31,8 +31,8 @@ public interface ItemRendererModifier extends Modifier {
     default void register(ModifierMap modifierMap) {
         modifierMap.merge(ItemRendererModifier.class, this, (a, b) ->
                 (provider, stack, matrices, light, overlay) -> {
-                    a.render(provider, stack, matrices, light, overlay);
-                    b.render(provider, stack, matrices, light, overlay);
+                    a.applyItemRendererModifier(provider, stack, matrices, light, overlay);
+                    b.applyItemRendererModifier(provider, stack, matrices, light, overlay);
                 });
     }
 }

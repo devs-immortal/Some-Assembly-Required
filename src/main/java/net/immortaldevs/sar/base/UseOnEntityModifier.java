@@ -10,14 +10,14 @@ import net.minecraft.util.Hand;
 
 @FunctionalInterface
 public interface UseOnEntityModifier extends Modifier {
-    ActionResult apply(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand);
+    ActionResult applyUseOnEntityModifier(ItemStack stack, PlayerEntity user, LivingEntity entity, Hand hand);
 
     @Override
     default void register(ModifierMap modifierMap) {
         modifierMap.merge(UseOnEntityModifier.class, this, (a, b) -> (stack, user, entity, hand) -> {
-            ActionResult result = a.apply(stack, user, entity, hand);
+            ActionResult result = a.applyUseOnEntityModifier(stack, user, entity, hand);
             if (result != ActionResult.PASS) return result;
-            return b.apply(stack, user, entity, hand);
+            return b.applyUseOnEntityModifier(stack, user, entity, hand);
         });
     }
 }

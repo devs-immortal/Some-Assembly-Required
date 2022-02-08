@@ -40,12 +40,12 @@ public class NbtLarvalComponentData extends NbtSkeletalComponentData implements 
 
     @Override
     public void loadChild(String name, Consumer<LarvalComponentData> transformer) {
-        String sanitisedName = sanitiseChildName(name);
+        NbtCompound components = this.nbt.getCompound("components");
 
-        if (this.nbt.contains(sanitisedName, NbtElement.COMPOUND_TYPE)) {
+        if (components.contains(name, NbtElement.COMPOUND_TYPE)) {
             new NbtLarvalComponentData(this,
                     this.changedCallback,
-                    this.nbt.getCompound(sanitisedName),
+                    components.getCompound(name),
                     this.initialiser,
                     transformer,
                     this::addModifier);
@@ -54,7 +54,8 @@ public class NbtLarvalComponentData extends NbtSkeletalComponentData implements 
 
     @Override
     public void loadChildren(String name, Consumer<LarvalComponentData> transformer) {
-        NbtList nbtChildren = this.nbt.getList(sanitiseChildName(name), NbtElement.COMPOUND_TYPE);
+        NbtList nbtChildren = this.nbt.getCompound("components")
+                .getList(name, NbtElement.COMPOUND_TYPE);
 
         for (int i = 0; i < nbtChildren.size(); i++) {
             new NbtLarvalComponentData(this,
