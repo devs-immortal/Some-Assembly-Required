@@ -12,12 +12,10 @@ import java.util.List;
 
 @FunctionalInterface
 public interface FoodStatusEffectModifier extends Modifier {
-    void applyFoodStatusEffectModifier(
-            ItemStack stack,
-            World world,
-            LivingEntity targetEntity,
-            List<Pair<StatusEffectInstance, Float>> effects
-    );
+    void applyFoodStatusEffectModifier(ItemStack stack,
+                                       World world,
+                                       LivingEntity targetEntity,
+                                       List<Pair<StatusEffectInstance, Float>> effects);
 
     @Override
     default void register(ModifierMap modifierMap) {

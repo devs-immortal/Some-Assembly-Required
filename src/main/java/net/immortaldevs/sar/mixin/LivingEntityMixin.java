@@ -24,7 +24,10 @@ public abstract class LivingEntityMixin {
                     shift = At.Shift.BY,
                     by = 2),
             index = 5)
-    private List<Pair<StatusEffectInstance, Float>> applyFoodEffects(List<Pair<StatusEffectInstance, Float>> list, ItemStack stack, World world, LivingEntity targetEntity) {
+    private List<Pair<StatusEffectInstance, Float>> applyFoodEffects(List<Pair<StatusEffectInstance, Float>> list,
+                                                                     ItemStack stack,
+                                                                     World world,
+                                                                     LivingEntity targetEntity) {
         Optional<RootComponentData> data = stack.sar$getComponentRoot();
         if (data.isEmpty()) return list;
 

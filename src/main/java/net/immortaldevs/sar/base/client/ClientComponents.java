@@ -8,22 +8,21 @@ import net.immortaldevs.sar.api.*;
 import net.immortaldevs.sar.api.SarRegistries;
 
 import java.util.WeakHashMap;
-import java.util.function.Consumer;
 
 @Environment(EnvType.CLIENT)
 public final class ClientComponents {
     private static final WeakHashMap<RootComponentData, FixedModifierMap> INSTANCES = new WeakHashMap<>();
-    private static final Reference2ReferenceMap<Component, Consumer<LarvalComponentData>> INITIALISERS
+    private static final Reference2ReferenceMap<Component, ClientComponent> CLIENT_COMPONENTS
             = new Reference2ReferenceOpenHashMap<>(SarRegistries.COMPONENT.size());
 
     public static FixedModifierMap getModifiers(RootComponentData data) {
         return INSTANCES.computeIfAbsent(data, root -> root.fork(larval -> {
-            var initialiser = INITIALISERS.get(larval.type());
-            if (initialiser != null) initialiser.accept(larval);
+            ClientComponent clientComponent = CLIENT_COMPONENTS.get(larval.type());
+            if (clientComponent != null) clientComponent.init(larval);
         }));
     }
 
-    public static void register(Component component, Consumer<LarvalComponentData> initialiser) {
-        INITIALISERS.put(component, initialiser);
+    public static void register(Component component, ClientComponent clientComponent) {
+        CLIENT_COMPONENTS.put(component, clientComponent);
     }
 }
