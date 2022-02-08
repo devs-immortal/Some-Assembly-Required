@@ -60,6 +60,5 @@ public abstract class ModelLoaderMixin {
             this.unbakedModels.put(resourceId, unbakedModel);
             ci.cancel();
         }
-
     }
 }
