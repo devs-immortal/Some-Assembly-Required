@@ -59,12 +59,12 @@ public class NbtLarvalComponentData extends NbtSkeletalComponentData implements 
                 .getList(name, NbtElement.COMPOUND_TYPE);
 
         for (int i = 0; i < nbtChildren.size(); i++) {
-            int j = i; // for lambda
+            int index = i; // for lambda
             new NbtLarvalComponentData(this,
                     this.changedCallback,
                     nbtChildren.getCompound(i),
                     this.initialiser,
-                    child -> transformer.accept(child, j),
+                    child -> transformer.accept(child, index),
                     this::addModifier);
         }
     }

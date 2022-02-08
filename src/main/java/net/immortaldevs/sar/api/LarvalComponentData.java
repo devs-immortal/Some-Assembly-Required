@@ -19,6 +19,6 @@ public interface LarvalComponentData extends ComponentData {
     }
 
     default void loadChildren(String name) {
-        this.loadChildren(name, (data, value) -> {});
+        this.loadChildren(name, (data, index) -> {});
     }
 }
