@@ -13,7 +13,6 @@ import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -23,9 +22,6 @@ import java.util.Optional;
 @Environment(EnvType.CLIENT)
 @Mixin(ItemRenderer.class)
 public abstract class ItemRendererMixin {
-    @Shadow
-    protected abstract void renderBakedItemModel(BakedModel model, ItemStack stack, int light, int overlay, MatrixStack matrices, VertexConsumer vertices);
-
     @Inject(method = "renderItem(Lnet/minecraft/item/ItemStack;Lnet/minecraft/client/render/model/json/ModelTransformation$Mode;ZLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;IILnet/minecraft/client/render/model/BakedModel;)V",
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/client/render/RenderLayers;getItemLayer(Lnet/minecraft/item/ItemStack;Z)Lnet/minecraft/client/render/RenderLayer;"),
@@ -68,11 +64,11 @@ public abstract class ItemRendererMixin {
             }
         };
 
-        if (model != NullModel.INSTANCE) this.renderBakedItemModel(model, stack, light, overlay, matrices,
-                provider.get(MultiRenderLayer.ENTITY_TRANSLUCENT_CULL_GHOST));
-
         modifier.applyItemRendererModifier(provider, stack, matrices, light, overlay);
-        matrices.pop();
-        ci.cancel();
+
+        if (model == NullModel.INSTANCE) {
+            matrices.pop();
+            ci.cancel();
+        }
     }
 }
