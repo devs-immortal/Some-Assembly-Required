@@ -8,8 +8,10 @@ import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemStack;
 
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+@SuppressWarnings("unused")
 @Environment(EnvType.CLIENT)
 @FunctionalInterface
 public interface ItemRendererModifier extends Modifier {
@@ -20,6 +22,15 @@ public interface ItemRendererModifier extends Modifier {
             int light,
             int overlay
     );
+
+    static ItemRendererModifier transform(ItemRendererModifier modifier, Consumer<MatrixStack> transformation) {
+        return (provider, stack, matrices, light, overlay) -> {
+            matrices.push();
+            transformation.accept(matrices);
+            modifier.applyItemRendererModifier(provider, stack, matrices, light, overlay);
+            matrices.pop();
+        };
+    }
 
     static ItemRendererModifier of(Supplier<BakedModel> model) {
         return (provider, stack, matrices, light, overlay) ->
