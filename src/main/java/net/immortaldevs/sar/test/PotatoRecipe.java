@@ -57,8 +57,7 @@ public class PotatoRecipe extends SpecialCraftingRecipe {
             return ItemStack.EMPTY;
         }
 
-        potato.sar$getOrCreateSkeletalComponentRoot()
-                .getOrCreateChild("potato", TestComponents.POTATO)
+        potato.getOrCreateComponent("potato", TestComponents.POTATO)
                 .createChild("filling", filling);
 
         return potato;

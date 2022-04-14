@@ -16,7 +16,6 @@
     "client.GameRendererMixin",
     "client.ItemRendererMixin",
     "client.MinecraftClientMixin",
-    "client.ModelLoaderMixin",
     "client.RenderLayerMultiPhaseMixin"
   ],
   "injectors": {

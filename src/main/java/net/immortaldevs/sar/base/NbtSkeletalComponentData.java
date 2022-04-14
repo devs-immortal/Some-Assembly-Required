@@ -7,51 +7,43 @@ import net.immortaldevs.sar.api.SkeletalComponentData;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
+import java.util.Objects;
 
 public class NbtSkeletalComponentData implements SkeletalComponentData {
-    protected final Runnable changedCallback;
     protected final NbtCompound nbt;
-    private final @Nullable SkeletalComponentData parent;
-    private final Component type;
+    protected final @Nullable SkeletalComponentData parent;
+    protected final Runnable changedCallback;
+    protected final Component component;
 
-    public NbtSkeletalComponentData(
-            @Nullable SkeletalComponentData parent,
-            Runnable changedCallback,
-            NbtCompound nbt
-    ) {
-        this(parent, changedCallback, nbt,
-                SarRegistries.COMPONENT.get(Identifier.tryParse(nbt.getString("id"))));
-    }
-
-    public NbtSkeletalComponentData(
-            @Nullable SkeletalComponentData parent,
-            Runnable changedCallback,
-            NbtCompound nbt,
-            Component type
-    ) {
-        this.changedCallback = changedCallback;
+    public NbtSkeletalComponentData(NbtCompound nbt,
+                                    @Nullable SkeletalComponentData parent,
+                                    Runnable changedCallback) {
         this.nbt = nbt;
         this.parent = parent;
-        this.type = type;
+        this.changedCallback = changedCallback;
+        this.component = Component.fromId(nbt.getString("id"));
     }
 
     @Override
-    public Optional<SkeletalComponentData> parent() {
-        return Optional.ofNullable(this.parent);
+    public @Nullable SkeletalComponentData getParent() {
+        return this.parent;
     }
 
     @Override
-    public Component type() {
-        return this.type;
+    public Component getComponent() {
+        return this.component;
     }
 
     @Override
-    public NbtCompound getNbt() {
-        return this.nbt.getCompound("tag");
+    public void changeComponent(Component component) {
+        this.nbt.putString("id", Objects.toString(SarRegistries.COMPONENT.getId(component)));
+    }
+
+    @Override
+    public @Nullable NbtCompound getNbt() {
+        return this.hasNbt() ? this.nbt.getCompound("tag") : null;
     }
 
     @Override
@@ -70,12 +62,6 @@ public class NbtSkeletalComponentData implements SkeletalComponentData {
         if (data == null) return;
         data.remove(key);
         if (data.isEmpty()) this.nbt.remove("tag");
-    }
-
-    @Override
-    public void changeType(Component type) {
-        this.nbt.putString("id", SarRegistries.COMPONENT.getId(type).toString());
-        this.changedCallback.run();
     }
 
     @Override
@@ -99,11 +85,13 @@ public class NbtSkeletalComponentData implements SkeletalComponentData {
     }
 
     @Override
-    public Optional<SkeletalComponentData> getChild(String name) {
+    public SkeletalComponentData getChild(String name) {
         NbtCompound childNbt = this.nbt.getCompound("components").getCompound(name);
         return childNbt.contains("id", NbtElement.STRING_TYPE)
-                ? Optional.of(new NbtSkeletalComponentData(this, this.changedCallback, childNbt))
-                : Optional.empty();
+                ? new NbtSkeletalComponentData(childNbt,
+                        this,
+                        this.changedCallback)
+                : null;
     }
 
     @Override
@@ -114,11 +102,13 @@ public class NbtSkeletalComponentData implements SkeletalComponentData {
         } else components = this.nbt.getCompound("components");
 
         NbtCompound childNbt = new NbtCompound();
-        childNbt.putString("id", SarRegistries.COMPONENT.getId(type).toString());
+        childNbt.putString("id", Objects.toString(SarRegistries.COMPONENT.getId(type)));
 
         components.put(name, childNbt);
         this.changedCallback.run();
-        return new NbtSkeletalComponentData(this, this.changedCallback, childNbt);
+        return new NbtSkeletalComponentData(childNbt,
+                this,
+                this.changedCallback);
     }
 
     @Override
@@ -176,14 +166,14 @@ public class NbtSkeletalComponentData implements SkeletalComponentData {
 
             @Override
             public SkeletalComponentData get(int i) {
-                return new NbtSkeletalComponentData(NbtSkeletalComponentData.this,
-                        NbtSkeletalComponentData.this.changedCallback,
-                        children.getCompound(i));
+                return new NbtSkeletalComponentData(children.getCompound(i),
+                        NbtSkeletalComponentData.this,
+                        NbtSkeletalComponentData.this.changedCallback);
             }
 
             private static NbtCompound createCompound(Component type) {
                 NbtCompound ret = new NbtCompound();
-                ret.putString("id", SarRegistries.COMPONENT.getId(type).toString());
+                ret.putString("id", Objects.toString(SarRegistries.COMPONENT.getId(type)));
                 return ret;
             }
         };
@@ -192,7 +182,7 @@ public class NbtSkeletalComponentData implements SkeletalComponentData {
     @Override
     public String toString() {
         return MoreObjects.toStringHelper(this)
-                .add("type", type)
+                .add("component", this.component)
                 .toString();
     }
 }

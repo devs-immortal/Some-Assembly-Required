@@ -3,7 +3,7 @@ package net.immortaldevs.sar.test;
 import net.minecraft.recipe.SpecialRecipeSerializer;
 import net.minecraft.util.registry.Registry;
 
-import static net.immortaldevs.sar.base.Sar.id;
+import static net.immortaldevs.sar.impl.Sar.id;
 
 public final class TestRecipeSerialisers {
     public static final SpecialRecipeSerializer<PotatoRecipe> POTATO = new SpecialRecipeSerializer<>(PotatoRecipe::new);

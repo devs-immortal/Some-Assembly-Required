@@ -4,7 +4,7 @@ import net.immortaldevs.sar.api.Component;
 import net.immortaldevs.sar.api.SarRegistries;
 import net.minecraft.util.registry.Registry;
 
-import static net.immortaldevs.sar.base.Sar.id;
+import static net.immortaldevs.sar.impl.Sar.id;
 
 public final class TestComponents {
     public static final Component POTATO = new PotatoComponent();

@@ -1,4 +1,4 @@
-package net.immortaldevs.sar.base;
+package net.immortaldevs.sar.impl;
 
 import net.fabricmc.api.ModInitializer;
 import net.immortaldevs.sar.test.TestComponents;

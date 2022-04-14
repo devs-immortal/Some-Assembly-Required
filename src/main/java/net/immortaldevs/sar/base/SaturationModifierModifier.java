@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 @SuppressWarnings("unused")
 @FunctionalInterface
 public interface SaturationModifierModifier extends Modifier {
-    float applySaturationModifierModifier(ItemStack stack, float saturationModifier);
+    float apply(ItemStack stack, float saturationModifier);
 
     static SaturationModifierModifier add(float value) {
         return (stack, saturationModifier) -> saturationModifier + value;
@@ -20,7 +20,7 @@ public interface SaturationModifierModifier extends Modifier {
     @Override
     default void register(ModifierMap modifierMap) {
         modifierMap.merge(SaturationModifierModifier.class, this, (a, b) -> (stack, saturationModifier) ->
-                b.applySaturationModifierModifier(stack,
-                        a.applySaturationModifierModifier(stack, saturationModifier)));
+                b.apply(stack,
+                        a.apply(stack, saturationModifier)));
     }
 }

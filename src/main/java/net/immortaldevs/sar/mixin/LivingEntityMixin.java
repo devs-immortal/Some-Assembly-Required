@@ -1,7 +1,7 @@
 package net.immortaldevs.sar.mixin;
 
 import com.mojang.datafixers.util.Pair;
-import net.immortaldevs.sar.api.RootComponentData;
+import net.immortaldevs.sar.api.FixedModifierMap;
 import net.immortaldevs.sar.base.FoodEffectModifier;
 import net.immortaldevs.sar.base.FoodStatusEffectModifier;
 import net.minecraft.entity.LivingEntity;
@@ -14,7 +14,6 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
@@ -28,25 +27,21 @@ public abstract class LivingEntityMixin {
                                                                      ItemStack stack,
                                                                      World world,
                                                                      LivingEntity targetEntity) {
-        Optional<RootComponentData> data = stack.sar$getComponentRoot();
-        if (data.isEmpty()) return list;
+        FixedModifierMap modifiers = stack.getModifiers();
+        if (modifiers == null) return list;
 
-        FoodEffectModifier foodEffectModifier = data.get()
-                .modifiers()
-                .get(FoodEffectModifier.class);
-
+        var foodEffectModifier = modifiers.get(FoodEffectModifier.class);
         if (foodEffectModifier != null) {
-            foodEffectModifier.applyFoodEffectModifier(stack, world, targetEntity);
+            foodEffectModifier.apply(stack, world, targetEntity);
         }
 
-        FoodStatusEffectModifier foodStatusEffectModifier = data.get()
-                .modifiers()
-                .get(FoodStatusEffectModifier.class);
+        var foodStatusEffectModifier = modifiers.get(FoodStatusEffectModifier.class);
+        if (foodStatusEffectModifier != null) {
+            List<Pair<StatusEffectInstance, Float>> effects = new ArrayList<>(list);
+            foodStatusEffectModifier.apply(stack, world, targetEntity, effects);
+            return effects;
+        }
 
-        if (foodStatusEffectModifier == null) return list;
-
-        List<Pair<StatusEffectInstance, Float>> effects = new ArrayList<>(list);
-        foodStatusEffectModifier.applyFoodStatusEffectModifier(stack, world, targetEntity, effects);
-        return effects;
+        return list;
     }
 }

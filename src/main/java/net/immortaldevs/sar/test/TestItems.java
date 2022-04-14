@@ -5,7 +5,7 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.item.Items;
 import net.minecraft.util.registry.Registry;
 
-import static net.immortaldevs.sar.base.Sar.id;
+import static net.immortaldevs.sar.impl.Sar.id;
 
 public class TestItems {
     public static final Item CHEESE = new Item(new Item.Settings().group(ItemGroup.FOOD).food(TestFoodComponents.CHEESE));

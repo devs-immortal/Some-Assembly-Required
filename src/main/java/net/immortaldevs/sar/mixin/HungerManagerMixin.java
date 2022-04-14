@@ -3,7 +3,7 @@ package net.immortaldevs.sar.mixin;
 import net.immortaldevs.divineintervention.injection.ModifyOperand;
 import net.immortaldevs.sar.base.HungerModifier;
 import net.immortaldevs.sar.base.SaturationModifierModifier;
-import net.immortaldevs.sar.base.Util;
+import net.immortaldevs.sar.impl.Util;
 import net.minecraft.entity.player.HungerManager;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -19,7 +19,7 @@ public abstract class HungerManagerMixin {
     private int modifyHunger(int hunger, Item item, ItemStack stack) {
         HungerModifier modifier = Util.getModifier(stack, HungerModifier.class);
         if (modifier == null) return hunger;
-        return modifier.applyHungerModifier(stack, hunger);
+        return modifier.apply(stack, hunger);
     }
 
     @ModifyOperand(method = "eat",
@@ -28,6 +28,6 @@ public abstract class HungerManagerMixin {
     private float modifySaturation(float saturation, Item item, ItemStack stack) {
         SaturationModifierModifier modifier = Util.getModifier(stack, SaturationModifierModifier.class);
         if (modifier == null) return saturation;
-        return modifier.applySaturationModifierModifier(stack, saturation);
+        return modifier.apply(stack, saturation);
     }
 }

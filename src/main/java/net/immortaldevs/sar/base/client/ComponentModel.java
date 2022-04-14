@@ -1,52 +1,40 @@
 package net.immortaldevs.sar.base.client;
 
+import it.unimi.dsi.fastutil.objects.Reference2ReferenceMap;
+import it.unimi.dsi.fastutil.objects.Reference2ReferenceOpenHashMap;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.model.BakedModel;
-import net.minecraft.client.util.ModelIdentifier;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
+import net.immortaldevs.sar.api.Component;
+import net.immortaldevs.sar.api.ComponentData;
+import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.model.json.ModelTransformation;
+import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 @Environment(EnvType.CLIENT)
-public final class ComponentModel implements Supplier<BakedModel> {
-    private static final List<ComponentModel> MODELS = new ArrayList<>();
+public abstract class ComponentModel {
+    private static final Reference2ReferenceMap<Component, ComponentModel> REGISTRY
+            = new Reference2ReferenceOpenHashMap<>();
 
-    private final ModelIdentifier id;
-    private BakedModel bakedModel = null;
-
-    public ComponentModel(String namespace, String path) {
-        this(new ModelIdentifier(namespace, path, "component"));
+    public ComponentModel(Component component) {
+        if (REGISTRY.put(component, this) == null) return;
+        throw new IllegalStateException("Component model for " + component + " has already been registered");
     }
 
-    public ComponentModel(ModelIdentifier id) {
-        this.id = id;
-        MODELS.add(this);
-    }
+    public abstract @Nullable Sprite getParticleSprite(ComponentData data,
+                                             ItemStack stack);
 
-    @Override
-    public BakedModel get() {
-        return this.bakedModel;
-    }
+    public abstract void itemRender(ComponentData data,
+                                    VertexConsumerProvider vertexConsumers,
+                                    ItemStack stack,
+                                    MatrixStack matrices,
+                                    ModelTransformation.Mode renderMode,
+                                    int light,
+                                    int overlay);
 
-    @Override
-    public String toString() {
-        return this.id.toString();
+    public static @Nullable ComponentModel get(Component component) {
+        return REGISTRY.get(component);
     }
-
-    public static void reload() {
-        for (ComponentModel model : MODELS) {
-            model.bakedModel = MinecraftClient.getInstance().getBakedModelManager().getModel(model.id);
-        }
-    }
-
-    public static void emitIds(Consumer<ModelIdentifier> consumer) {
-        for (ComponentModel model : MODELS) {
-            consumer.accept(model.id);
-        }
-    }
-
 }

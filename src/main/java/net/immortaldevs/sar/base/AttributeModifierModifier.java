@@ -11,7 +11,7 @@ import net.minecraft.item.ItemStack;
 @SuppressWarnings("unused")
 @FunctionalInterface
 public interface AttributeModifierModifier extends Modifier {
-    void applyAttributeModifierModifier(
+    void apply(
             ItemStack stack,
             EquipmentSlot slot,
             Multimap<EntityAttribute, EntityAttributeModifier> modifiers
@@ -45,8 +45,8 @@ public interface AttributeModifierModifier extends Modifier {
     @Override
     default void register(ModifierMap modifierMap) {
         modifierMap.merge(AttributeModifierModifier.class, this, (a, b) -> (stack, slot, modifiers) -> {
-            a.applyAttributeModifierModifier(stack, slot, modifiers);
-            b.applyAttributeModifierModifier(stack, slot, modifiers);
+            a.apply(stack, slot, modifiers);
+            b.apply(stack, slot, modifiers);
         });
     }
 }

@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class CheeseComponent extends Component {
     protected static final UUID SPEED_MODIFIER_ID = new UUID(
-            0xa986dd17d9cd461dL, 0x9a2df01977b5cb25L);
+            0xa986dd17_d9cd_461dL, 0x9a2d_f01977b5cb25L);
 
     @Override
     public void init(LarvalComponentData data) {

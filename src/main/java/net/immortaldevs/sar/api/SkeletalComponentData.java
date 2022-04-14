@@ -4,15 +4,15 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-
 @SuppressWarnings("unused")
 public interface SkeletalComponentData {
-    Optional<SkeletalComponentData> parent();
+    @Nullable SkeletalComponentData getParent();
 
-    Component type();
+    Component getComponent();
 
-    NbtCompound getNbt();
+    void changeComponent(Component component);
+
+    @Nullable NbtCompound getNbt();
 
     void setNbt(NbtCompound nbt);
 
@@ -21,12 +21,15 @@ public interface SkeletalComponentData {
     void removeSubNbt(String key);
 
     default void setSubNbt(String key, NbtElement element) {
-        if (this.hasNbt()) this.getNbt().put(key, element);
+        NbtCompound nbt = this.getNbt();
+        if (nbt != null) nbt.put(key, element);
     }
 
     default @Nullable NbtCompound getSubNbt(String key) {
-        if (this.hasNbt()) return this.getNbt().getCompound(key);
-        return null;
+        NbtCompound nbt = this.getNbt();
+        return nbt != null && nbt.contains(key, NbtElement.COMPOUND_TYPE)
+                ? nbt.getCompound(key)
+                : null;
     }
 
     default NbtCompound getOrCreateNbt() {
@@ -43,21 +46,20 @@ public interface SkeletalComponentData {
         return nbt.getCompound(key);
     }
 
-    void changeType(Component type);
-
     boolean contains(String name);
 
     boolean containsChild(String name);
 
     boolean containsChildren(String name);
 
-    Optional<SkeletalComponentData> getChild(String name);
+    SkeletalComponentData getChild(String name);
 
     SkeletalComponentData createChild(String name, Component type);
 
     default SkeletalComponentData getOrCreateChild(String name, Component type) {
-        return this.getChild(name).orElseGet(() ->
-                this.createChild(name, type));
+        SkeletalComponentData child = this.getChild(name);
+        if (child != null) return child;
+        return this.createChild(name, type);
     }
 
     void removeChild(String name);

@@ -15,16 +15,18 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.immortaldevs.sar.base.Sar"
+      "net.immortaldevs.sar.impl.Sar"
     ],
     "client": [
-      "net.immortaldevs.sar.base.client.SarClient"
+      "net.immortaldevs.sar.impl.client.SarClient"
     ]
   },
 
   "mixins": [
     "sar.mixins.json"
   ],
+
+  "accessWidener" : "sar.accesswidener",
 
   "depends": {
     "fabric": "*",
@@ -35,7 +37,7 @@
 
   "custom": {
     "loom:injected_interfaces": {
-      "net/minecraft/class_1799": ["net/immortaldevs/sar/base/ItemStackExt"]
+      "net/minecraft/class_1799": ["net/immortaldevs/sar/base/SarItemStack"]
     }
   }
 }

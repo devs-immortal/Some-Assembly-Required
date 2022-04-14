@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 @SuppressWarnings("unused")
 @FunctionalInterface
 public interface HungerModifier extends Modifier {
-    int applyHungerModifier(ItemStack stack, int hunger);
+    int apply(ItemStack stack, int hunger);
 
     static HungerModifier add(int value) {
         return (stack, hunger) -> hunger + value;
@@ -20,6 +20,6 @@ public interface HungerModifier extends Modifier {
     @Override
     default void register(ModifierMap modifierMap) {
         modifierMap.merge(HungerModifier.class, this, (a, b) -> (stack, hunger) ->
-                b.applyHungerModifier(stack, a.applyHungerModifier(stack, hunger)));
+                b.apply(stack, a.apply(stack, hunger)));
     }
 }

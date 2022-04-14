@@ -21,7 +21,7 @@ public final class SarRenderLayers extends RenderLayer {
                     true,
                     false,
                     MultiPhaseParameters.builder()
-                            .shader(RenderPhase.ENTITY_TRANSLUCENT_CULL_SHADER)
+                            .shader(new RenderPhase.Shader(SarShaders::getTranslucentOverlay))
                             .texture(new Texture(id, false, false))
                             .transparency(RenderPhase.TRANSLUCENT_TRANSPARENCY)
                             .lightmap(RenderPhase.ENABLE_LIGHTMAP)
@@ -39,6 +39,8 @@ public final class SarRenderLayers extends RenderLayer {
                     MultiPhaseParameters.builder()
                             .shader(new RenderPhase.Shader(SarShaders::getTranslucentGhost))
                             .texture(new Texture(id, false, false))
+                            .lightmap(RenderPhase.ENABLE_LIGHTMAP)
+                            .overlay(RenderPhase.ENABLE_OVERLAY_COLOR)
                             .writeMaskState(RenderPhase.DEPTH_MASK)
                             .build(true)));
 

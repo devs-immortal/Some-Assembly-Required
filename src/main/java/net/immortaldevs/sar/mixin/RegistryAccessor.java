@@ -13,11 +13,11 @@ import java.util.function.Supplier;
 public interface RegistryAccessor {
     @Invoker
     static <T> RegistryKey<Registry<T>> callCreateRegistryKey(String registryId) {
-        throw new IllegalStateException();
+        throw new Error();
     }
 
     @Invoker
-    static <T> DefaultedRegistry<T> callCreate(RegistryKey<? extends Registry<T>> key, String defaultId, Supplier<T> defaultEntry) {
-        throw new IllegalStateException();
+    static <T> Registry<T> callCreate(RegistryKey<? extends Registry<T>> key, Registry.DefaultEntryGetter<T> defaultEntryGetter) {
+        throw new Error();
     }
 }

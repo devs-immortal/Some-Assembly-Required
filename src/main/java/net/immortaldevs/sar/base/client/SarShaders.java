@@ -5,10 +5,15 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.render.Shader;
 
 @Environment(EnvType.CLIENT)
-public class SarShaders {
+public final class SarShaders {
     public static Shader translucentGhost;
+    public static Shader translucentOverlay;
 
     public static Shader getTranslucentGhost() {
         return translucentGhost;
+    }
+
+    public static Shader getTranslucentOverlay() {
+        return translucentOverlay;
     }
 }

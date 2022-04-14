@@ -31,5 +31,8 @@ public abstract class GameRendererMixin {
     private void loadShaders(ResourceManager manager, CallbackInfo ci, List<Program> list, List<Pair<Shader, Consumer<Shader>>> list2) throws IOException {
         list2.add(Pair.of(new Shader(manager, "sar_rendertype_translucent_ghost", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL),
                 (shader) -> SarShaders.translucentGhost = shader));
+
+        list2.add(Pair.of(new Shader(manager, "sar_rendertype_translucent_overlay", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL),
+                (shader) -> SarShaders.translucentOverlay = shader));
     }
 }

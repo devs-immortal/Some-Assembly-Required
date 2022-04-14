@@ -3,9 +3,8 @@ package net.immortaldevs.sar.mixin.client;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.immortaldevs.divineintervention.injection.ModifyOperand;
-import net.immortaldevs.sar.api.RootComponentData;
-import net.immortaldevs.sar.base.client.ClientComponents;
-import net.immortaldevs.sar.base.client.CrackParticleSpriteModifier;
+import net.immortaldevs.sar.api.ComponentData;
+import net.immortaldevs.sar.base.client.ClientUtil;
 import net.minecraft.client.particle.CrackParticle;
 import net.minecraft.client.particle.SpriteBillboardParticle;
 import net.minecraft.client.texture.Sprite;
@@ -14,7 +13,9 @@ import net.minecraft.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 @SuppressWarnings("unused")
 @Environment(EnvType.CLIENT)
@@ -28,13 +29,17 @@ public abstract class CrackParticleMixin extends SpriteBillboardParticle {
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/client/render/model/BakedModel;getParticleSprite()Lnet/minecraft/client/texture/Sprite;"))
     private Sprite modifySprite(Sprite sprite, ClientWorld world, double x, double y, double z, ItemStack stack) {
-        Optional<RootComponentData> data;
-        if ((data = stack.sar$getComponentRoot()).isEmpty()) return sprite;
+        Iterator<ComponentData> iter = stack.loadedComponentIterator();
+        if (!iter.hasNext()) return sprite;
 
-        var modifier = ClientComponents.getModifiers(data.get())
-                .get(CrackParticleSpriteModifier.class);
+        List<Sprite> sprites = new ArrayList<>();
+        sprites.add(sprite);
+        ClientUtil.traverseComponentModels(iter,
+                (data, model) -> {
+                    Sprite componentSprite = model.getParticleSprite(data, stack);
+                    if (componentSprite != null) sprites.add(componentSprite);
+                }, () -> {});
 
-        if (modifier == null) return sprite;
-        return modifier.applyCrackParticleSpriteModifier(stack, world, this.random);
+        return sprites.get(this.random.nextInt(sprites.size()));
     }
 }
