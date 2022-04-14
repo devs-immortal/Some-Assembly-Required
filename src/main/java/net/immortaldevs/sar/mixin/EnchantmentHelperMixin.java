@@ -1,7 +1,6 @@
 package net.immortaldevs.sar.mixin;
 
 import net.immortaldevs.sar.base.EnchantmentLevelModifier;
-import net.immortaldevs.sar.impl.Util;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
@@ -16,7 +15,7 @@ public abstract class EnchantmentHelperMixin {
             at = @At("RETURN"),
             cancellable = true)
     private static void getLevel(Enchantment enchantment, ItemStack stack, CallbackInfoReturnable<Integer> cir) {
-        EnchantmentLevelModifier modifier = Util.getModifier(stack, EnchantmentLevelModifier.class);
+        EnchantmentLevelModifier modifier = stack.getModifiers().get(EnchantmentLevelModifier.class);
         if (modifier == null) return;
         cir.setReturnValue(modifier.apply(enchantment, stack, cir.getReturnValueI()));
     }

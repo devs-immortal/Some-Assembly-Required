@@ -7,7 +7,6 @@ import net.immortaldevs.sar.base.*;
 import net.immortaldevs.sar.impl.ComponentRoot;
 import net.immortaldevs.sar.impl.NbtComponentRoot;
 import net.immortaldevs.sar.impl.ItemStackExt;
-import net.immortaldevs.sar.impl.Util;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -48,7 +47,7 @@ public abstract class ItemStackMixin implements ItemStackExt {
             at = @At("RETURN"),
             cancellable = true)
     private void getAttributeModifiers(EquipmentSlot slot, CallbackInfoReturnable<Multimap<EntityAttribute, EntityAttributeModifier>> cir) {
-        AttributeModifierModifier modifier = Util.getModifier(this, AttributeModifierModifier.class);
+        AttributeModifierModifier modifier = this.getModifiers().get(AttributeModifierModifier.class);
         if (modifier == null) return;
         Multimap<EntityAttribute, EntityAttributeModifier> out = HashMultimap.create(cir.getReturnValue());
         modifier.apply((ItemStack) (Object) this, slot, out);
@@ -59,7 +58,7 @@ public abstract class ItemStackMixin implements ItemStackExt {
             at = @At("HEAD"),
             cancellable = true)
     private void useOnEntity(PlayerEntity user, LivingEntity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        UseOnEntityModifier modifier = Util.getModifier(this, UseOnEntityModifier.class);
+        UseOnEntityModifier modifier = this.getModifiers().get(UseOnEntityModifier.class);
         if (modifier == null) return;
         ActionResult result = modifier.apply((ItemStack) (Object) this, user, entity, hand);
         if (result == ActionResult.PASS) return;
@@ -70,7 +69,7 @@ public abstract class ItemStackMixin implements ItemStackExt {
             at = @At("HEAD"),
             cancellable = true)
     private void useOnBlock(ItemUsageContext context, CallbackInfoReturnable<ActionResult> cir) {
-        UseOnBlockModifier modifier = Util.getModifier(this, UseOnBlockModifier.class);
+        UseOnBlockModifier modifier = this.getModifiers().get(UseOnBlockModifier.class);
         if (modifier == null) return;
         ActionResult result = modifier.apply(context);
         if (result == ActionResult.PASS) return;
