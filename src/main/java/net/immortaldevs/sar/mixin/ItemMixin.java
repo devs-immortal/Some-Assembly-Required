@@ -50,8 +50,8 @@ public abstract class ItemMixin {
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/item/Item;isFood()Z",
                     shift = At.Shift.AFTER))
-    private int getMaxUseTime(int zero, ItemStack stack) {
-        return stack.isFood() ? 32 : 0;
+    private boolean getMaxUseTime(boolean result, ItemStack stack) {
+        return stack.isFood();
     }
 
     @ModifyOperand(method = "getFoodComponent",
