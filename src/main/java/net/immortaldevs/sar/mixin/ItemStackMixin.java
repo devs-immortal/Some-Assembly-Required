@@ -77,12 +77,6 @@ public abstract class ItemStackMixin implements ItemStackExt {
         cir.setReturnValue(result);
     }
 
-    @ModifyOperand(method = "isFood",
-            at = @At("RETURN"))
-    private boolean isFood(boolean value) {
-        return value || this.getModifiers().contains(EdibleModifier.class);
-    }
-
     @Override
     public FixedModifierMap getModifiers() {
         return this.getComponentRoot().modifiers();
