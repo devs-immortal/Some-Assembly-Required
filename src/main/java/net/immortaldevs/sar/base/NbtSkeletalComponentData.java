@@ -124,7 +124,7 @@ public class NbtSkeletalComponentData implements SkeletalComponentData {
     @Override
     public Children getChildren(String name) {
         NbtCompound components = this.nbt.getCompound("components");
-        NbtList children = this.nbt.getCompound("components").getList(name, NbtElement.COMPOUND_TYPE);
+        NbtList children = components.getList(name, NbtElement.COMPOUND_TYPE);
         return new Children() {
             @Override
             public int size() {
@@ -138,15 +138,17 @@ public class NbtSkeletalComponentData implements SkeletalComponentData {
 
             @Override
             public void add(Component type) {
-                components.put(name, children);
                 children.add(createCompound(type));
+                components.put(name, children);
+                NbtSkeletalComponentData.this.nbt.put("components", components);
                 NbtSkeletalComponentData.this.changedCallback.run();
             }
 
             @Override
             public void add(int i, Component type) {
-                components.put(name, children);
                 children.add(i, createCompound(type));
+                components.put(name, children);
+                NbtSkeletalComponentData.this.nbt.put("components", components);
                 NbtSkeletalComponentData.this.changedCallback.run();
             }
 
@@ -154,6 +156,7 @@ public class NbtSkeletalComponentData implements SkeletalComponentData {
             public void remove(int i) {
                 children.remove(i);
                 if (children.isEmpty()) components.remove(name);
+                if (components.isEmpty()) NbtSkeletalComponentData.this.nbt.remove("components");
                 NbtSkeletalComponentData.this.changedCallback.run();
             }
 
@@ -161,6 +164,7 @@ public class NbtSkeletalComponentData implements SkeletalComponentData {
             public void clear() {
                 children.clear();
                 components.remove(name);
+                if (components.isEmpty()) NbtSkeletalComponentData.this.nbt.remove("components");
                 NbtSkeletalComponentData.this.changedCallback.run();
             }
 
