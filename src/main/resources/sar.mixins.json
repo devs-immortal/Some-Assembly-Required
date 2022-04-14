@@ -4,8 +4,10 @@
   "package": "net.immortaldevs.sar.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "BlockItemMixin",
     "EnchantmentHelperMixin",
     "HungerManagerMixin",
+    "ItemMixin",
     "ItemStackMixin",
     "LivingEntityMixin",
     "RegistryAccessor"
