@@ -2,6 +2,7 @@ package net.immortaldevs.sar.mixin;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import net.immortaldevs.divineintervention.injection.ModifyOperand;
 import net.immortaldevs.sar.api.*;
 import net.immortaldevs.sar.base.*;
 import net.immortaldevs.sar.impl.ComponentRoot;
@@ -74,6 +75,12 @@ public abstract class ItemStackMixin implements ItemStackExt {
         ActionResult result = modifier.apply(context);
         if (result == ActionResult.PASS) return;
         cir.setReturnValue(result);
+    }
+
+    @ModifyOperand(method = "isFood",
+            at = @At("RETURN"))
+    private boolean isFood(boolean value) {
+        return value || this.getModifiers().contains(EdibleModifier.class);
     }
 
     @Override

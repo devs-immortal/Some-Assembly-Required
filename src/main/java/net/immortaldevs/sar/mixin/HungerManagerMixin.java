@@ -32,8 +32,7 @@ public abstract class HungerManagerMixin {
 
     @ModifyOperand(method = "eat",
             at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/item/Item;isFood()Z",
-                    shift = At.Shift.AFTER))
+                    target = "Lnet/minecraft/item/Item;isFood()Z"))
     private boolean eat(boolean result, Item item, ItemStack stack) {
         return stack.isFood();
     }

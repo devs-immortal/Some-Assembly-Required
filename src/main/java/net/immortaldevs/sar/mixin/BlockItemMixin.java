@@ -11,8 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class BlockItemMixin {
     @ModifyOperand(method = "useOnBlock",
             at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/item/Item;isFood()Z",
-                    shift = At.Shift.AFTER))
+                    target = "Lnet/minecraft/item/BlockItem;isFood()Z"))
     private boolean useOnBlock(boolean result, ItemUsageContext context) {
         return context.getStack().isFood();
     }

@@ -12,7 +12,6 @@ import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 
 @SuppressWarnings("unused")
 @Mixin(Item.class)
@@ -24,32 +23,28 @@ public abstract class ItemMixin {
 
     @ModifyOperand(method = "use",
             at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/item/Item;isFood()Z",
-                    shift = At.Shift.AFTER))
+                    target = "Lnet/minecraft/item/Item;isFood()Z"))
     private boolean use(boolean result, World world, PlayerEntity user, Hand hand) {
         return user.getStackInHand(hand).isFood();
     }
 
     @ModifyOperand(method = "finishUsing",
             at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/item/Item;isFood()Z",
-                    shift = At.Shift.AFTER))
+                    target = "Lnet/minecraft/item/Item;isFood()Z"))
     private boolean finishUsing(boolean result, ItemStack stack, World world, LivingEntity user) {
         return stack.isFood();
     }
 
     @ModifyOperand(method = "getUseAction",
             at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/item/Item;isFood()Z",
-                    shift = At.Shift.AFTER))
+                    target = "Lnet/minecraft/item/Item;isFood()Z"))
     private boolean getUseAction(boolean result, ItemStack stack) {
         return stack.isFood();
     }
 
-    @ModifyOperand(method = "getUseAction",
+    @ModifyOperand(method = "getMaxUseTime",
             at = @At(value = "INVOKE",
-                    target = "Lnet/minecraft/item/Item;isFood()Z",
-                    shift = At.Shift.AFTER))
+                    target = "Lnet/minecraft/item/Item;isFood()Z"))
     private boolean getMaxUseTime(boolean result, ItemStack stack) {
         return stack.isFood();
     }

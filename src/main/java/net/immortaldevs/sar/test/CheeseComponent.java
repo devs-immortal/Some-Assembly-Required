@@ -3,6 +3,7 @@ package net.immortaldevs.sar.test;
 import net.immortaldevs.sar.api.Component;
 import net.immortaldevs.sar.api.LarvalComponentData;
 import net.immortaldevs.sar.base.AttributeModifierModifier;
+import net.immortaldevs.sar.base.EdibleModifier;
 import net.immortaldevs.sar.base.EnchantmentLevelModifier;
 import net.minecraft.enchantment.Enchantments;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -23,5 +24,7 @@ public class CheeseComponent extends Component {
                         "cheese cheese cheese cheese cheese",
                         0.25,
                         EntityAttributeModifier.Operation.MULTIPLY_TOTAL)));
+
+        data.addModifier(EdibleModifier.INSTANCE);
     }
 }
