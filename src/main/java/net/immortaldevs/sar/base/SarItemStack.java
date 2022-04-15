@@ -14,7 +14,7 @@ public interface SarItemStack extends ComponentHost {
     }
 
     @Override
-    default Iterator<ComponentData> loadedComponentIterator() {
+    default Iterator<ComponentData> componentIterator() {
         throw new NotImplementedException();
     }
 

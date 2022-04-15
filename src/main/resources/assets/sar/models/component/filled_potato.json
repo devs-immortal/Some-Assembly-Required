@@ -1,6 +1,0 @@
-{
-  "parent": "builtin/generated",
-  "textures": {
-    "layer0": "sar:component/filled_potato"
-  }
-}

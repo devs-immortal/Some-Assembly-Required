@@ -29,7 +29,7 @@ public abstract class CrackParticleMixin extends SpriteBillboardParticle {
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/client/render/model/BakedModel;getParticleSprite()Lnet/minecraft/client/texture/Sprite;"))
     private Sprite modifySprite(Sprite sprite, ClientWorld world, double x, double y, double z, ItemStack stack) {
-        Iterator<ComponentData> iter = stack.loadedComponentIterator();
+        Iterator<ComponentData> iter = stack.componentIterator();
         if (!iter.hasNext()) return sprite;
 
         List<Sprite> sprites = new ArrayList<>();

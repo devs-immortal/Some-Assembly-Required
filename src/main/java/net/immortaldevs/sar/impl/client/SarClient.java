@@ -5,7 +5,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.model.ModelLoadingRegistry;
 import net.immortaldevs.sar.base.client.LoadedModel;
-import net.immortaldevs.sar.test.client.TestComponentModels;
 import net.minecraft.util.Identifier;
 
 @Environment(EnvType.CLIENT)
@@ -22,7 +21,5 @@ public final class SarClient implements ClientModInitializer {
 
             return null;
         });
-
-        TestComponentModels.init();
     }
 }

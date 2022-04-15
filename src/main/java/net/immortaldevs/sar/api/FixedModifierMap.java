@@ -2,6 +2,9 @@ package net.immortaldevs.sar.api;
 
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * An immutable modifier map
+ */
 @SuppressWarnings("unused")
 public interface FixedModifierMap {
     FixedModifierMap EMPTY = new FixedModifierMap() {

@@ -2,7 +2,6 @@ package net.immortaldevs.sar.mixin;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import net.immortaldevs.divineintervention.injection.ModifyOperand;
 import net.immortaldevs.sar.api.*;
 import net.immortaldevs.sar.base.*;
 import net.immortaldevs.sar.impl.ComponentRoot;
@@ -83,7 +82,7 @@ public abstract class ItemStackMixin implements ItemStackExt {
     }
 
     @Override
-    public Iterator<ComponentData> loadedComponentIterator() {
+    public Iterator<ComponentData> componentIterator() {
         return this.getComponentRoot().components();
     }
 

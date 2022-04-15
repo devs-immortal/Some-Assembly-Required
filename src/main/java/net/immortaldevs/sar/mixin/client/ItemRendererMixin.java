@@ -28,7 +28,7 @@ public abstract class ItemRendererMixin {
             at = @At(value = "INVOKE",
                     target = "Lnet/minecraft/client/util/math/MatrixStack;pop()V"))
     private void renderItem(ItemStack stack, ModelTransformation.Mode renderMode, boolean leftHanded, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, BakedModel model, CallbackInfo ci) {
-        Iterator<ComponentData> iter = stack.loadedComponentIterator();
+        Iterator<ComponentData> iter = stack.componentIterator();
         if (iter.hasNext()) ClientUtil.traverseComponentModels(iter,
                 (data, componentModel) -> {
                     matrices.push();

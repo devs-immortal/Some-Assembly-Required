@@ -11,7 +11,7 @@ public interface ItemStackExt extends SarItemStack {
     FixedModifierMap getModifiers();
 
     @Override
-    Iterator<ComponentData> loadedComponentIterator();
+    Iterator<ComponentData> componentIterator();
 
     @Override
     boolean hasComponent(String name);

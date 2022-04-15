@@ -4,6 +4,9 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+/**
+ * A map of {@code Class<T extends Modifier>} to {@code T}
+ */
 @SuppressWarnings({"unused", "UnusedReturnValue"})
 public interface ModifierMap extends FixedModifierMap {
     <T extends Modifier> T put(Class<T> key, T value);
