@@ -14,7 +14,7 @@ import java.util.function.Function;
 @Environment(EnvType.CLIENT)
 public final class SarRenderLayers extends RenderLayer {
     public static final Function<Identifier, RenderLayer> ENTITY_TRANSLUCENT_CULL_LAYERED = Util.memoize(id ->
-            RenderLayerFactory.get().create("sar_entity_translucent_cull_layered",
+            RenderLayer.of("sar_entity_translucent_cull_layered",
                     VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL,
                     VertexFormat.DrawMode.QUADS,
                     256,
@@ -30,7 +30,7 @@ public final class SarRenderLayers extends RenderLayer {
                             .build(false)));
 
     public static final Function<Identifier, RenderLayer> TRANSLUCENT_GHOST = Util.memoize(id ->
-            RenderLayerFactory.get().create("sar_translucent_ghost",
+            RenderLayer.of("sar_translucent_ghost",
                     VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL,
                     VertexFormat.DrawMode.QUADS,
                     256,

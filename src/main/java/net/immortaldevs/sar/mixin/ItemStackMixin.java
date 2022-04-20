@@ -16,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.nbt.NbtList;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import org.jetbrains.annotations.NotNull;
@@ -39,6 +40,8 @@ public abstract class ItemStackMixin implements ItemStackExt {
 
     @Shadow
     public abstract @Nullable NbtCompound getSubNbt(String key);
+
+    @Shadow public abstract void removeSubNbt(String key);
 
     @Unique
     private @Nullable ComponentRoot componentRoot;
@@ -93,12 +96,15 @@ public abstract class ItemStackMixin implements ItemStackExt {
     }
 
     @Override
-    public @Nullable SkeletalComponentData getComponent(@NotNull String name) {
-        if (this.nbt == null || !this.nbt.contains("components", NbtElement.COMPOUND_TYPE)) {
-            return null;
-        }
+    public boolean hasComponents(@NotNull String name) {
+        NbtCompound components = this.getSubNbt("components");
+        return components != null && components.contains(name, NbtElement.LIST_TYPE);
+    }
 
-        NbtCompound components = this.nbt.getCompound("components");
+    @Override
+    public @Nullable SkeletalComponentData getComponent(@NotNull String name) {
+        NbtCompound components = this.getSubNbt("components");
+        if (components == null) return null;
 
         if (!components.contains(name, NbtElement.COMPOUND_TYPE)) {
             return null;
@@ -117,6 +123,7 @@ public abstract class ItemStackMixin implements ItemStackExt {
             NbtCompound data = new NbtCompound();
             data.putString("id", component.getId().toString());
             components.put(name, data);
+            this.componentRoot = null;
         }
 
         return new NbtSkeletalComponentData(components.getCompound(name),
@@ -129,7 +136,75 @@ public abstract class ItemStackMixin implements ItemStackExt {
         NbtCompound components = this.getSubNbt("components");
         if (components != null) {
             components.remove(name);
+            this.componentRoot = null;
+            if (components.isEmpty()) this.removeSubNbt("components");
         }
+    }
+
+    @Override
+    public ComponentCollection getComponents(@NotNull String name) {
+        return new ComponentCollection() {
+            @Override
+            public int size() {
+                return this.read().size();
+            }
+
+            @Override
+            public boolean isEmpty() {
+                return this.read().isEmpty();
+            }
+
+            @Override
+            public void add(@NotNull Component component) {
+                NbtCompound child = new NbtCompound();
+                child.putString("id", component.getId().toString());
+
+                NbtList children = this.read();
+                children.add(child);
+                this.write(children);
+            }
+
+            @Override
+            public void add(int i, @NotNull Component component) {
+                NbtCompound child = new NbtCompound();
+                child.putString("id", component.getId().toString());
+
+                NbtList children = this.read();
+                children.add(i, child);
+                this.write(children);
+            }
+
+            @Override
+            public void remove(int i) {
+                NbtList children = this.read();
+                children.remove(i);
+                this.write(children);
+            }
+
+            @Override
+            public void clear() {
+                ItemStackMixin.this.removeComponent(name);
+            }
+
+            @Override
+            public SkeletalComponentData get(int i) {
+                return null;
+            }
+
+            private NbtList read() {
+                NbtCompound components = ItemStackMixin.this.getSubNbt("components");
+                if (components == null) return new NbtList();
+                return components.getList(name, NbtElement.COMPOUND_TYPE);
+            }
+
+            private void write(NbtList list) {
+                if (list.isEmpty()) this.clear();
+                else {
+                    ItemStackMixin.this.getOrCreateSubNbt("components").put(name, list);
+                    ItemStackMixin.this.componentRoot = null;
+                }
+            }
+        };
     }
 
     @Unique

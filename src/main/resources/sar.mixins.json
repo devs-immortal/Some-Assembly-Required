@@ -15,8 +15,7 @@
     "client.CrackParticleMixin",
     "client.GameRendererMixin",
     "client.ItemRendererMixin",
-    "client.MinecraftClientMixin",
-    "client.RenderLayerMultiPhaseMixin"
+    "client.MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1

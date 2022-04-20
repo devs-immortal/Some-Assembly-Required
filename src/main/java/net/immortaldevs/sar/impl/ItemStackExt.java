@@ -17,6 +17,9 @@ public interface ItemStackExt extends SarItemStack {
     boolean hasComponent(String name);
 
     @Override
+    boolean hasComponents(String name);
+
+    @Override
     @Nullable SkeletalComponentData getComponent(String name);
 
     @Override
@@ -24,4 +27,7 @@ public interface ItemStackExt extends SarItemStack {
 
     @Override
     void removeComponent(String name);
+
+    @Override
+    ComponentCollection getComponents(String name);
 }

@@ -2,14 +2,12 @@ package net.immortaldevs.sar.base;
 
 import com.google.common.base.MoreObjects;
 import net.immortaldevs.sar.api.Component;
-import net.immortaldevs.sar.api.SarRegistries;
+import net.immortaldevs.sar.api.ComponentCollection;
 import net.immortaldevs.sar.api.SkeletalComponentData;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 public class NbtSkeletalComponentData implements SkeletalComponentData {
     protected final NbtCompound nbt;
@@ -38,7 +36,8 @@ public class NbtSkeletalComponentData implements SkeletalComponentData {
 
     @Override
     public void changeComponent(Component component) {
-        this.nbt.putString("id", Objects.toString(SarRegistries.COMPONENT.getId(component)));
+        this.nbt.putString("id", component.getId().toString());
+        this.changedCallback.run();
     }
 
     @Override
@@ -102,7 +101,7 @@ public class NbtSkeletalComponentData implements SkeletalComponentData {
         } else components = this.nbt.getCompound("components");
 
         NbtCompound childNbt = new NbtCompound();
-        childNbt.putString("id", Objects.toString(SarRegistries.COMPONENT.getId(type)));
+        childNbt.putString("id", type.getId().toString());
 
         components.put(name, childNbt);
         this.changedCallback.run();
@@ -122,63 +121,71 @@ public class NbtSkeletalComponentData implements SkeletalComponentData {
     }
 
     @Override
-    public Children getChildren(String name) {
-        NbtCompound components = this.nbt.getCompound("components");
-        NbtList children = components.getList(name, NbtElement.COMPOUND_TYPE);
-        return new Children() {
+    public ComponentCollection getChildren(String name) {
+        return new ComponentCollection() {
             @Override
             public int size() {
-                return children.size();
+                return this.read().size();
             }
 
             @Override
             public boolean isEmpty() {
-                return children.isEmpty();
+                return this.read().isEmpty();
             }
 
             @Override
-            public void add(Component type) {
-                children.add(createCompound(type));
-                components.put(name, children);
-                NbtSkeletalComponentData.this.nbt.put("components", components);
-                NbtSkeletalComponentData.this.changedCallback.run();
+            public void add(Component component) {
+                NbtCompound child = new NbtCompound();
+                child.putString("id", component.getId().toString());
+
+                NbtList children = this.read();
+                children.add(child);
+                this.write(children);
             }
 
             @Override
-            public void add(int i, Component type) {
-                children.add(i, createCompound(type));
-                components.put(name, children);
-                NbtSkeletalComponentData.this.nbt.put("components", components);
-                NbtSkeletalComponentData.this.changedCallback.run();
+            public void add(int i, Component component) {
+                NbtCompound child = new NbtCompound();
+                child.putString("id", component.getId().toString());
+
+                NbtList children = this.read();
+                children.add(i, child);
+                this.write(children);
             }
 
             @Override
             public void remove(int i) {
+                NbtList children = this.read();
                 children.remove(i);
-                if (children.isEmpty()) components.remove(name);
-                if (components.isEmpty()) NbtSkeletalComponentData.this.nbt.remove("components");
-                NbtSkeletalComponentData.this.changedCallback.run();
+                this.write(children);
             }
 
             @Override
             public void clear() {
-                children.clear();
-                components.remove(name);
-                if (components.isEmpty()) NbtSkeletalComponentData.this.nbt.remove("components");
-                NbtSkeletalComponentData.this.changedCallback.run();
+                NbtSkeletalComponentData.this.removeChild(name);
             }
 
             @Override
             public SkeletalComponentData get(int i) {
-                return new NbtSkeletalComponentData(children.getCompound(i),
+                return new NbtSkeletalComponentData(this.read().getCompound(i),
                         NbtSkeletalComponentData.this,
                         NbtSkeletalComponentData.this.changedCallback);
             }
 
-            private static NbtCompound createCompound(Component type) {
-                NbtCompound ret = new NbtCompound();
-                ret.putString("id", Objects.toString(SarRegistries.COMPONENT.getId(type)));
-                return ret;
+            private NbtList read() {
+                return NbtSkeletalComponentData.this.nbt
+                        .getCompound("components")
+                        .getList(name, NbtElement.COMPOUND_TYPE);
+            }
+
+            private void write(NbtList list) {
+                if (list.isEmpty()) this.clear();
+                else {
+                    NbtCompound components = NbtSkeletalComponentData.this.nbt.getCompound("components");
+                    components.put(name, list);
+                    NbtSkeletalComponentData.this.nbt.put("components", components);
+                    NbtSkeletalComponentData.this.changedCallback.run();
+                }
             }
         };
     }

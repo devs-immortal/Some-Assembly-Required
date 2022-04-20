@@ -64,21 +64,5 @@ public interface SkeletalComponentData {
 
     void removeChild(String name);
 
-    Children getChildren(String name);
-
-    interface Children {
-        int size();
-
-        boolean isEmpty();
-
-        void add(Component type);
-
-        void add(int i, Component type);
-
-        void remove(int i);
-
-        void clear();
-
-        SkeletalComponentData get(int i);
-    }
+    ComponentCollection getChildren(String name);
 }

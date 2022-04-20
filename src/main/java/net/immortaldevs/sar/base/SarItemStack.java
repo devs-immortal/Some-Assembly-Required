@@ -24,6 +24,11 @@ public interface SarItemStack extends ComponentHost {
     }
 
     @Override
+    default boolean hasComponents(String name) {
+        throw new NotImplementedException();
+    }
+
+    @Override
     default @Nullable SkeletalComponentData getComponent(String name) {
         throw new NotImplementedException();
     }
@@ -35,6 +40,11 @@ public interface SarItemStack extends ComponentHost {
 
     @Override
     default void removeComponent(String name) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    default ComponentCollection getComponents(String name) {
         throw new NotImplementedException();
     }
 }

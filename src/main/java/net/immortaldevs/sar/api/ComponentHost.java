@@ -27,6 +27,12 @@ public interface ComponentHost {
     boolean hasComponent(String name);
 
     /**
+     * @param name the name of the components to check for
+     * @return true if components with this name are present at the top level
+     */
+    boolean hasComponents(String name);
+
+    /**
      * @param name the name of the component to retrieve
      * @return the component's data, or null if no component with this name is present
      */
@@ -44,4 +50,10 @@ public interface ComponentHost {
      * @param name the name of the component to remove
      */
     void removeComponent(String name);
+
+    /**
+     * @param name the name of the components to retrieve
+     * @return a (possibly empty) collection of components
+     */
+    ComponentCollection getComponents(String name);
 }
