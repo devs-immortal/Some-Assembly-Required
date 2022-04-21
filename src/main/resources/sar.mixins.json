@@ -8,7 +8,8 @@
     "HungerManagerMixin",
     "ItemStackMixin",
     "LivingEntityMixin",
-    "RegistryAccessor"
+    "RegistryAccessor",
+    "data.ModelProviderMixin"
   ],
   "client": [
     "client.BufferBuilderStorageMixin",

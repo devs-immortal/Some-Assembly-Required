@@ -6,7 +6,6 @@ import net.immortaldevs.sar.api.*;
 import net.immortaldevs.sar.base.*;
 import net.immortaldevs.sar.impl.ComponentRoot;
 import net.immortaldevs.sar.impl.NbtComponentRoot;
-import net.immortaldevs.sar.impl.ItemStackExt;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
@@ -31,7 +30,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Iterator;
 
 @Mixin(ItemStack.class)
-public abstract class ItemStackMixin implements ItemStackExt {
+public abstract class ItemStackMixin implements SarItemStack {
     @Shadow
     public abstract NbtCompound getOrCreateSubNbt(String key);
 
