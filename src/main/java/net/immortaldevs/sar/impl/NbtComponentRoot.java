@@ -23,14 +23,10 @@ public final class NbtComponentRoot implements ComponentRoot {
         List<NbtCompound> components = new ArrayList<>();
 
         for (String key : nbt.getKeys()) {
-            switch (nbt.get(key)) {
-                case NbtCompound compound -> components.add(compound);
-                case NbtList list -> {
-                    for (NbtElement element : list) {
-                        if (element instanceof NbtCompound compound) components.add(compound);
-                    }
-                }
-                case null, default -> {}
+            NbtElement element = nbt.get(key);
+            if (element instanceof NbtCompound compound) components.add(compound);
+            else if (element instanceof NbtList list) for (NbtElement e : list) {
+                if (e instanceof NbtCompound compound) components.add(compound);
             }
         }
 
