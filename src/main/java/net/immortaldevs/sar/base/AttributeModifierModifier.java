@@ -11,16 +11,18 @@ import net.minecraft.item.ItemStack;
 @SuppressWarnings("unused")
 @FunctionalInterface
 public interface AttributeModifierModifier extends Modifier {
-    void apply(
-            ItemStack stack,
-            EquipmentSlot slot,
-            Multimap<EntityAttribute, EntityAttributeModifier> modifiers
-    );
+    void apply(ItemStack stack,
+               EquipmentSlot slot,
+               Multimap<EntityAttribute, EntityAttributeModifier> modifiers);
 
     static AttributeModifierModifier of(EntityAttribute attribute, EntityAttributeModifier modifier) {
+        return (stack, slot, modifiers) -> modifiers.put(attribute, modifier);
+    }
+
+    static AttributeModifierModifier of(EquipmentSlot equipmentSlot,
+                                        EntityAttribute attribute, EntityAttributeModifier modifier) {
         return (stack, slot, modifiers) -> {
-            System.out.println(modifiers);
-            modifiers.put(attribute, modifier);
+            if (slot == equipmentSlot) modifiers.put(attribute, modifier);
         };
     }
 
@@ -32,6 +34,17 @@ public interface AttributeModifierModifier extends Modifier {
         };
     }
 
+    static AttributeModifierModifier of(EquipmentSlot equipmentSlot,
+                                        EntityAttribute attribute0, EntityAttributeModifier modifier0,
+                                        EntityAttribute attribute1, EntityAttributeModifier modifier1) {
+        return (stack, slot, modifiers) -> {
+            if (slot == equipmentSlot) {
+                modifiers.put(attribute0, modifier0);
+                modifiers.put(attribute1, modifier1);
+            }
+        };
+    }
+
     static AttributeModifierModifier of(EntityAttribute attribute0, EntityAttributeModifier modifier0,
                                         EntityAttribute attribute1, EntityAttributeModifier modifier1,
                                         EntityAttribute attribute2, EntityAttributeModifier modifier2) {
@@ -39,6 +52,19 @@ public interface AttributeModifierModifier extends Modifier {
             modifiers.put(attribute0, modifier0);
             modifiers.put(attribute1, modifier1);
             modifiers.put(attribute2, modifier2);
+        };
+    }
+
+    static AttributeModifierModifier of(EquipmentSlot equipmentSlot,
+                                        EntityAttribute attribute0, EntityAttributeModifier modifier0,
+                                        EntityAttribute attribute1, EntityAttributeModifier modifier1,
+                                        EntityAttribute attribute2, EntityAttributeModifier modifier2) {
+        return (stack, slot, modifiers) -> {
+            if (slot == equipmentSlot) {
+                modifiers.put(attribute0, modifier0);
+                modifiers.put(attribute1, modifier1);
+                modifiers.put(attribute2, modifier2);
+            }
         };
     }
 
