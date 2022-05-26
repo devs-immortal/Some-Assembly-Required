@@ -187,7 +187,9 @@ public abstract class ItemStackMixin implements SarItemStack {
 
             @Override
             public SkeletalComponentData get(int i) {
-                return null;
+                return new NbtSkeletalComponentData(this.read().getCompound(i),
+                        null,
+                        () -> ItemStackMixin.this.componentRoot = null);
             }
 
             private NbtList read() {
