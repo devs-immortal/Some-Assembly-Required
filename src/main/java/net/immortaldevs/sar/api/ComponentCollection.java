@@ -1,6 +1,8 @@
 package net.immortaldevs.sar.api;
 
-public interface ComponentCollection {
+import java.util.Iterator;
+
+public interface ComponentCollection extends Iterable<SkeletalComponentData> {
     int size();
 
     boolean isEmpty();
@@ -14,4 +16,21 @@ public interface ComponentCollection {
     void clear();
 
     SkeletalComponentData get(int i);
+
+    @Override
+    default Iterator<SkeletalComponentData> iterator() {
+       return new Iterator<>() {
+           int index = 0;
+
+           @Override
+           public boolean hasNext() {
+               return index < size();
+           }
+
+           @Override
+           public SkeletalComponentData next() {
+               return get(index++);
+           }
+       };
+    }
 }
