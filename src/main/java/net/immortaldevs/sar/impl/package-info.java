@@ -1,2 +1,2 @@
-@javax.annotation.ParametersAreNonnullByDefault
+@NonnullByDefault
 package net.immortaldevs.sar.impl;

@@ -1,27 +1,21 @@
 package net.immortaldevs.sar.base;
 
 import net.immortaldevs.sar.api.Component;
-import net.immortaldevs.sar.api.LarvalComponentData;
+import net.immortaldevs.sar.api.ComponentNode;
 import net.immortaldevs.sar.api.Modifier;
-
-import java.util.Collection;
+import net.immortaldevs.sar.api.ModifierHandler;
 
 @SuppressWarnings("unused")
 public class SimpleComponent extends Component {
-    protected final Modifier[] modifiers;
+    protected final Modifier<?>[] modifiers;
 
-    public SimpleComponent(Collection<Modifier> modifiers) {
-        this(modifiers.toArray(Modifier[]::new));
-    }
-
-    public SimpleComponent(Modifier... modifiers) {
+    public SimpleComponent(Modifier<?>... modifiers) {
         this.modifiers = modifiers;
     }
 
+    @SuppressWarnings({"rawtypes", "unchecked"})
     @Override
-    public void init(LarvalComponentData data) {
-        for (Modifier modifier : this.modifiers) {
-            data.addModifier(modifier);
-        }
+    public void addModifiers(ComponentNode node, ModifierHandler handler) {
+        for (Modifier<?> modifier : modifiers) handler.add((Modifier) modifier);
     }
 }

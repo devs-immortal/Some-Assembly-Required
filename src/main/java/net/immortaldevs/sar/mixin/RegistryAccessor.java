@@ -18,7 +18,10 @@ public interface RegistryAccessor {
     }
 
     @Invoker
-    static <T> DefaultedRegistry<T> callCreate(RegistryKey<? extends Registry<T>> key, String defaultId, Function<T, RegistryEntry.Reference<T>> valueToEntryFunction, Registry.DefaultEntryGetter<T> defaultEntryGetter) {
+    static <T> DefaultedRegistry<T> callCreate(RegistryKey<? extends Registry<T>> key,
+                                               String defaultId,
+                                               Function<T, RegistryEntry.Reference<T>> valueToEntryFunction,
+                                               Registry.DefaultEntryGetter<T> defaultEntryGetter) {
         throw new Error();
     }
 }

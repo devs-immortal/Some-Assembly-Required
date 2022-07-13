@@ -2,12 +2,12 @@ package net.immortaldevs.sar.api;
 
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.RegistryEntry;
-import org.jetbrains.annotations.Nullable;
 
 /**
- * A component is attached to a {@link ComponentHost}, and is responsible for adding modifiers and loading child
+ * A component is attached to a {@link ComponentNodeHost}, and is responsible for adding modifiers and loading child
  * components.
  */
+@SuppressWarnings("unused")
 public class Component {
     /**
      * A default component that handles unknown ids
@@ -16,11 +16,10 @@ public class Component {
 
     private final RegistryEntry.Reference<Component> registryEntry = SarRegistries.COMPONENT.createEntry(this);
 
-    /**
-     * Called when initialising components for a host. Add modifiers and load children here.
-     * @param data the data for this component
-     */
-    public void init(LarvalComponentData data) {
+    public void loadComponentNodes(ComponentNode node, ComponentNodeHandler handler) {
+    }
+
+    public void addModifiers(ComponentNode node, ModifierHandler handler) {
     }
 
     public final RegistryEntry.Reference<Component> getRegistryEntry() {
@@ -28,19 +27,11 @@ public class Component {
     }
 
     public final Identifier getId() {
-        return SarRegistries.COMPONENT.getId(this);
+        return this.registryEntry.registryKey().getValue();
     }
 
     @Override
     public String toString() {
         return this.getId().toString();
-    }
-
-    public static Component fromId(@Nullable Identifier id) {
-        return SarRegistries.COMPONENT.get(id);
-    }
-
-    public static Component fromId(@Nullable String id) {
-        return fromId(Identifier.tryParse(id));
     }
 }

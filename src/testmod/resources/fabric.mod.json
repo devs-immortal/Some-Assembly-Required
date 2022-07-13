@@ -1,0 +1,21 @@
+{
+  "schemaVersion": 1,
+  "id": "sar_test",
+  "version": "0.0.0",
+
+  "name": "SAR Test",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "net.immortaldevs.sar.test.SarTest"
+    ],
+    "fabric-gametest": [
+      "net.immortaldevs.sar.test.test.ModifierOrderTest"
+    ]
+  },
+
+  "depends": {
+    "sar": "*"
+  }
+}

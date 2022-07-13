@@ -23,13 +23,18 @@
   },
 
   "mixins": [
-    "sar.mixins.json"
+    "sar.mixins.json",
+    {
+      "config": "sar.client.mixins.json",
+      "environment": "client"
+    }
   ],
 
   "accessWidener" : "sar.accesswidener",
 
   "depends": {
     "fabric": "*",
+    "divine_intervention": "*",
     "fabricloader": "*",
     "minecraft": "*",
     "java": ">=17"
@@ -37,7 +42,8 @@
 
   "custom": {
     "loom:injected_interfaces": {
-      "net/minecraft/class_1799": ["net/immortaldevs/sar/base/SarItemStack"]
+      "net/minecraft/class_1792": ["net/immortaldevs/sar/impl/SarItem"],
+      "net/minecraft/class_1799": ["net/immortaldevs/sar/impl/SarItemStack"]
     }
   }
 }

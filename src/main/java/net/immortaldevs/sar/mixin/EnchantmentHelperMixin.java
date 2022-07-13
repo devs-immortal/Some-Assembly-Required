@@ -1,5 +1,6 @@
 package net.immortaldevs.sar.mixin;
 
+import net.immortaldevs.divineintervention.injection.ModifyOperand;
 import net.immortaldevs.sar.base.EnchantmentLevelModifier;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -11,12 +12,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(EnchantmentHelper.class)
 public abstract class EnchantmentHelperMixin {
-    @Inject(method = "getLevel",
-            at = @At("RETURN"),
-            cancellable = true)
-    private static void getLevel(Enchantment enchantment, ItemStack stack, CallbackInfoReturnable<Integer> cir) {
-        EnchantmentLevelModifier modifier = stack.getModifiers().get(EnchantmentLevelModifier.class);
-        if (modifier == null) return;
-        cir.setReturnValue(modifier.apply(enchantment, stack, cir.getReturnValueI()));
+    @ModifyOperand(method = "getLevel",
+            at = @At("RETURN"))
+    private static int modifyLevel(int level, Enchantment enchantment, ItemStack stack) {
+        EnchantmentLevelModifier modifier = stack.getModifier(EnchantmentLevelModifier.class);
+        return modifier == null ? level : modifier.apply(enchantment, stack, level);
     }
 }

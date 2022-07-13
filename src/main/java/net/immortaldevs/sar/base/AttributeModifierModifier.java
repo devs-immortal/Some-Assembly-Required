@@ -2,7 +2,6 @@ package net.immortaldevs.sar.base;
 
 import com.google.common.collect.Multimap;
 import net.immortaldevs.sar.api.Modifier;
-import net.immortaldevs.sar.api.ModifierMap;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -10,10 +9,23 @@ import net.minecraft.item.ItemStack;
 
 @SuppressWarnings("unused")
 @FunctionalInterface
-public interface AttributeModifierModifier extends Modifier {
+public interface AttributeModifierModifier extends Modifier<AttributeModifierModifier> {
     void apply(ItemStack stack,
                EquipmentSlot slot,
                Multimap<EntityAttribute, EntityAttributeModifier> modifiers);
+
+    @Override
+    default Class<AttributeModifierModifier> getType() {
+        return AttributeModifierModifier.class;
+    }
+
+    @Override
+    default AttributeModifierModifier merge(AttributeModifierModifier that) {
+        return (stack, slot, modifiers) -> {
+            this.apply(stack, slot, modifiers);
+            that.apply(stack, slot, modifiers);
+        };
+    }
 
     static AttributeModifierModifier of(EntityAttribute attribute, EntityAttributeModifier modifier) {
         return (stack, slot, modifiers) -> modifiers.put(attribute, modifier);
@@ -66,13 +78,5 @@ public interface AttributeModifierModifier extends Modifier {
                 modifiers.put(attribute2, modifier2);
             }
         };
-    }
-
-    @Override
-    default void register(ModifierMap modifierMap) {
-        modifierMap.merge(AttributeModifierModifier.class, this, (a, b) -> (stack, slot, modifiers) -> {
-            a.apply(stack, slot, modifiers);
-            b.apply(stack, slot, modifiers);
-        });
     }
 }

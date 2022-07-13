@@ -1,8 +1,11 @@
 package net.immortaldevs.sar.api;
 
-import org.jetbrains.annotations.Contract;
+public interface Modifier<T extends Modifier<T>> {
+    Class<T> getType();
 
-public interface Modifier {
-    @Contract(mutates = "param")
-    void register(ModifierMap modifierMap);
+    T merge(T that);
+
+    default T adopt(T that) {
+        return this.merge(that);
+    }
 }

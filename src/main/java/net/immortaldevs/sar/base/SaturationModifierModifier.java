@@ -1,13 +1,22 @@
 package net.immortaldevs.sar.base;
 
 import net.immortaldevs.sar.api.Modifier;
-import net.immortaldevs.sar.api.ModifierMap;
 import net.minecraft.item.ItemStack;
 
 @SuppressWarnings("unused")
 @FunctionalInterface
-public interface SaturationModifierModifier extends Modifier {
+public interface SaturationModifierModifier extends Modifier<SaturationModifierModifier> {
     float apply(ItemStack stack, float saturationModifier);
+
+    @Override
+    default Class<SaturationModifierModifier> getType() {
+        return SaturationModifierModifier.class;
+    }
+
+    @Override
+    default SaturationModifierModifier merge(SaturationModifierModifier that) {
+        return (stack, saturationModifier) -> that.apply(stack, this.apply(stack, saturationModifier));
+    }
 
     static SaturationModifierModifier add(float value) {
         return (stack, saturationModifier) -> saturationModifier + value;
@@ -15,12 +24,5 @@ public interface SaturationModifierModifier extends Modifier {
 
     static SaturationModifierModifier multiply(float value) {
         return (stack, saturationModifier) -> saturationModifier * value;
-    }
-
-    @Override
-    default void register(ModifierMap modifierMap) {
-        modifierMap.merge(SaturationModifierModifier.class, this, (a, b) -> (stack, saturationModifier) ->
-                b.apply(stack,
-                        a.apply(stack, saturationModifier)));
     }
 }

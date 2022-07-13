@@ -6,17 +6,12 @@
   "mixins": [
     "EnchantmentHelperMixin",
     "HungerManagerMixin",
+    "ItemMixin",
     "ItemStackMixin",
     "LivingEntityMixin",
+    "NbtCompoundAccessor",
     "RegistryAccessor",
-    "data.ModelProviderMixin"
-  ],
-  "client": [
-    "client.BufferBuilderStorageMixin",
-    "client.CrackParticleMixin",
-    "client.GameRendererMixin",
-    "client.ItemRendererMixin",
-    "client.MinecraftClientMixin"
+    "ModelProviderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

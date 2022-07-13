@@ -1,7 +1,6 @@
 package net.immortaldevs.sar.base;
 
 import net.immortaldevs.sar.api.Modifier;
-import net.immortaldevs.sar.api.ModifierMap;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -9,19 +8,19 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
 @SuppressWarnings("unused")
-public interface FoodEffectModifier extends Modifier {
+public interface FoodEffectModifier extends Modifier<FoodEffectModifier> {
     void apply(ItemStack stack, World world, LivingEntity targetEntity);
 
-    static FoodEffectModifier of(StatusEffect effect, int duration, int amplifier) {
-        return (stack, world, targetEntity) ->
-                targetEntity.addStatusEffect(new StatusEffectInstance(effect, duration, amplifier));
+    @Override
+    default Class<FoodEffectModifier> getType() {
+        return FoodEffectModifier.class;
     }
 
     @Override
-    default void register(ModifierMap modifierMap) {
-        modifierMap.merge(FoodEffectModifier.class, this, (a, b) -> (stack, world, targetEntity) -> {
-            a.apply(stack, world, targetEntity);
-            b.apply(stack, world, targetEntity);
-        });
+    default FoodEffectModifier merge(FoodEffectModifier that) {
+        return (stack, world, targetEntity) -> {
+            this.apply(stack, world, targetEntity);
+            that.apply(stack, world, targetEntity);
+        };
     }
 }
