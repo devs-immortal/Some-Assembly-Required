@@ -52,7 +52,7 @@ jobs:
         uses: rjstone/discord-webhook-notify@v1
         if: ${{ needs.build.outputs.status == 'failure' || needs.gametest.outputs.status == 'failure' }}
         with:
-          severity: info
+          severity: error
           details: |
             Build: ${{ needs.build.outputs.status }}
             Gametest: ${{ needs.gametest.outputs.status }}
