@@ -43,19 +43,22 @@ jobs:
     steps:
       - name: Success
         uses: rjstone/discord-webhook-notify@v1
-        if: '${{ needs.build.outputs.status }} == success && ${{ needs.gametest.outputs.status }} == success'
+        if: ${{ needs.build.outputs.status == 'success' && needs.gametest.outputs.status == 'success' }}
         with:
           severity: info
           details: All checks have passed
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
       - name: Failure
         uses: rjstone/discord-webhook-notify@v1
-        if: '${{ needs.build.outputs.status }} == failure || ${{ needs.gametest.outputs.status }} == failure'
+        if: ${{ needs.build.outputs.status == 'failure' || needs.gametest.outputs.status == 'failure' }}
         with:
           severity: info
-          details: 'Build: ${{ needs.build.outputs.status }}\nGametest: ${{ needs.gametest.outputs.status }}'
+          details: |
+            Build: ${{ needs.build.outputs.status }}
+            Gametest: ${{ needs.gametest.outputs.status }}
           webhookUrl: ${{ secrets.DISCORD_WEBHOOK }}
   tag:
+    if: ${{ github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
     needs: [ build, gametest ]
     continue-on-error: true
@@ -68,8 +71,8 @@ jobs:
           path: gradle.properties
           property: sarVersion
       - name: Create tag
+        continue-on-error: true
         uses: actions/github-script@v5
-        if: ${{ success() && github.ref == 'refs/heads/master' }}
         with:
           script: |
             github.rest.git.createRef({
