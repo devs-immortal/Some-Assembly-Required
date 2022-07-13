@@ -4,6 +4,7 @@ import net.immortaldevs.sar.api.Component;
 import net.immortaldevs.sar.api.ComponentNode;
 import net.immortaldevs.sar.api.ComponentNodeCollection;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 
 import java.util.Iterator;
@@ -40,6 +41,20 @@ public abstract class NbtComponentNodeCollection implements ComponentNodeCollect
     @Override
     public boolean isEmpty() {
         return this.read().isEmpty();
+    }
+
+    @Override
+    public boolean contains(Component component) {
+        NbtList children = this.read();
+        String id = component.getId().toString();
+        for (NbtElement child : children) {
+            if (child instanceof NbtCompound nbt
+                    && nbt.getString("id").equals(id)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override

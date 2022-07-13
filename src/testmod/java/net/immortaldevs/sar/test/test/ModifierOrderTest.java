@@ -28,7 +28,7 @@ public class ModifierOrderTest {
 
         ComponentNode b = a.getOrCreateComponentNode(id("modifier_order_test"),
                 SarTestComponents.MODIFIER_ORDER_TEST);
-        b.getOrCreateNbt().putString("name", "b");
+        b.getOrCreateNbt().putString("name", "bob");
         a.updateComponents();
 
         ComponentNodeCollection nodes = b.getComponentNodes(id("modifier_order_tests"));
